@@ -1,0 +1,9 @@
+package com.example.interview.domain.category.domain
+
+interface CategoryRepository {
+    fun save(category: Category): Category
+    fun findById(id: CategoryId): Category?
+    fun findAll(): List<Category>
+    fun deleteById(id: CategoryId)
+    fun existsByName(name: String): Boolean
+} 

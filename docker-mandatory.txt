@@ -1,0 +1,8 @@
+# 테이블 목록 확인
+docker exec -i interview-questions-db psql -U postgres -d interview_questions -c "\dt"
+
+# 특정 테이블 구조 확인
+docker exec -i interview-questions-db psql -U postgres -d interview_questions -c "\d 테이블명"
+
+# 테이블 데이터 조회
+docker exec -i interview-questions-db psql -U postgres -d interview_questions -c "SELECT * FROM 테이블명 LIMIT 10;"
