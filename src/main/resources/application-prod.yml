@@ -18,7 +18,7 @@ spring:
     locations: classpath:db/migration
     
 server:
-  port: 8080
+  port: ${PORT:8080}
   servlet:
     context-path: /
     
@@ -32,13 +32,13 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,prometheus
+        include: [ "health", "info", "prometheus" ]
   endpoint:
     health:
       show-details: when_authorized
-  metrics:
-    export:
-      prometheus:
+  prometheus:
+    metrics:
+      export:
         enabled: true
         
 logging:
