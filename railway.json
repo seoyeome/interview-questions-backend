@@ -5,7 +5,7 @@
     "buildCommand": "./gradlew bootJar --no-daemon --parallel --build-cache -x test"
   },
   "deploy": {
-    "startCommand": "java -Dserver.port=$PORT -jar build/libs/*.jar --spring.profiles.active=prod --logging.level.root=DEBUG",
+    "startCommand": "java -Dserver.port=$PORT -jar build/libs/backend-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod --logging.level.root=DEBUG",
     "healthcheckPath": "/actuator/health",
     "healthcheckTimeout": 300,
     "restartPolicyType": "ON_FAILURE",
