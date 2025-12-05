@@ -37,6 +37,19 @@ class User(
     @Column(nullable = false)
     val role: UserRole = UserRole.USER,
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    var status: UserStatus = UserStatus.ACTIVE,
+
+    @Column(name = "last_login_at")
+    var lastLoginAt: LocalDateTime? = null,
+
+    @Column(name = "deleted_at")
+    var deletedAt: LocalDateTime? = null,
+
+    @Column(name = "retention_until")
+    var retentionUntil: LocalDateTime? = null,
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     var createdAt: LocalDateTime = LocalDateTime.now(),
@@ -54,4 +67,11 @@ enum class AuthProvider {
 enum class UserRole {
     USER,
     ADMIN
+}
+
+enum class UserStatus {
+    ACTIVE,      // 활성 사용자
+    DEACTIVATED, // 연결 끊김 (휴면)
+    SUSPENDED,   // 정지
+    DELETED      // 삭제 예정
 }

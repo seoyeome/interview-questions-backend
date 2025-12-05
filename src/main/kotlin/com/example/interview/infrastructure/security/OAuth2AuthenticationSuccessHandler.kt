@@ -49,6 +49,10 @@ class OAuth2AuthenticationSuccessHandler(
             )
         }
 
+        // 마지막 로그인 시간 업데이트
+        user.lastLoginAt = java.time.LocalDateTime.now()
+        userRepository.save(user)
+
         // JWT 토큰 생성
         val jwtToken = jwtTokenProvider.generateToken(user.id!!, user.email)
 

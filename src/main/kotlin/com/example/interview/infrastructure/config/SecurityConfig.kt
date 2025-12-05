@@ -35,6 +35,7 @@ class SecurityConfig(
                         "/api/v1/sub-categories/**",
                         "/api/v1/questions/**",
                         "/api/v1/ai/**",
+                        "/api/v1/webhook/**",
                         "/oauth2/**",
                         "/login/**",
                         "/actuator/**",
