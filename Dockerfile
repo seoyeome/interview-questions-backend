@@ -8,12 +8,16 @@ COPY gradlew .
 COPY gradle gradle
 COPY build.gradle.kts .
 COPY gradle.properties .
+COPY settings.gradle.kts* ./
+
+# Download dependencies (cached layer)
+RUN chmod +x gradlew && ./gradlew dependencies --no-daemon || true
 
 # Copy source code
 COPY src src
 
-# Make gradlew executable and build
-RUN chmod +x gradlew && ./gradlew bootJar --no-daemon -x test
+# Build application
+RUN ./gradlew bootJar --no-daemon -x test
 
 # Runtime stage
 FROM amazoncorretto:17-alpine
