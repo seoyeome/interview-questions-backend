@@ -7,7 +7,7 @@ WORKDIR /build
 COPY gradlew .
 COPY gradle gradle
 COPY build.gradle.kts .
-COPY settings.gradle.kts .
+COPY gradle.properties .
 
 # Copy source code
 COPY src src
