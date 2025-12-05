@@ -34,6 +34,7 @@ class SecurityConfig(
                         "/api/v1/categories/**",
                         "/api/v1/sub-categories/**",
                         "/api/v1/questions/**",
+                        "/api/v1/ai/**",
                         "/oauth2/**",
                         "/login/**",
                         "/actuator/**",
@@ -42,7 +43,6 @@ class SecurityConfig(
                         "/swagger-ui.html"
                     ).permitAll()
                     // Protected endpoints
-                    .requestMatchers("/api/v1/ai/**").authenticated()
                     .anyRequest().authenticated()
             }
             .oauth2Login { oauth2 ->
