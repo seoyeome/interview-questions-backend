@@ -1,0 +1,20 @@
+name: Keep Render Backend Awake
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Render health endpoint
+        env:
+          PING_URL: ${{ secrets.RENDER_PING_URL }}
+        run: |
+          if [ -z "$PING_URL" ]; then
+            echo "RENDER_PING_URL secret is not configured"
+            exit 1
+          fi
+          curl -fsS "$PING_URL" || (echo "Ping failed" && exit 1)
