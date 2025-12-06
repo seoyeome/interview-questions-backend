@@ -47,3 +47,9 @@ logging:
     com.example: INFO
     org.springframework.web: INFO
     org.hibernate: INFO
+
+sentry:
+  dsn: ${SENTRY_DSN}
+  environment: production
+  traces-sample-rate: 1.0
+  enable-tracing: true
