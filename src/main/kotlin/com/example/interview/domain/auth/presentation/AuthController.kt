@@ -8,6 +8,8 @@ import com.example.interview.domain.user.domain.User
 import com.example.interview.domain.user.domain.UserRepository
 import com.example.interview.domain.user.domain.UserRole
 import com.example.interview.infrastructure.security.JwtTokenProvider
+import jakarta.servlet.http.Cookie
+import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -23,7 +25,10 @@ class AuthController(
 ) {
 
     @PostMapping("/signup")
-    fun signup(@Valid @RequestBody request: SignupRequest): ResponseEntity<AuthResponse> {
+    fun signup(
+        @Valid @RequestBody request: SignupRequest,
+        response: HttpServletResponse
+    ): ResponseEntity<AuthResponse> {
         // 이메일 중복 체크
         if (userRepository.existsByEmail(request.email)) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
@@ -44,11 +49,24 @@ class AuthController(
         // JWT 토큰 생성
         val token = jwtTokenProvider.generateToken(user.id!!, user.email)
 
-        return ResponseEntity.ok(AuthResponse(token, "회원가입 성공"))
+        // HttpOnly 쿠키로 토큰 설정
+        val cookie = Cookie("token", token).apply {
+            isHttpOnly = true
+            secure = true // HTTPS only
+            path = "/"
+            maxAge = 86400 // 24시간
+            setAttribute("SameSite", "Strict")
+        }
+        response.addCookie(cookie)
+
+        return ResponseEntity.ok(AuthResponse(null, "회원가입 성공"))
     }
 
     @PostMapping("/login")
-    fun login(@Valid @RequestBody request: LoginRequest): ResponseEntity<AuthResponse> {
+    fun login(
+        @Valid @RequestBody request: LoginRequest,
+        response: HttpServletResponse
+    ): ResponseEntity<AuthResponse> {
         // 사용자 조회
         val user = userRepository.findByEmail(request.email).orElse(null)
             ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -69,6 +87,31 @@ class AuthController(
         // JWT 토큰 생성
         val token = jwtTokenProvider.generateToken(user.id!!, user.email)
 
-        return ResponseEntity.ok(AuthResponse(token, "로그인 성공"))
+        // HttpOnly 쿠키로 토큰 설정
+        val cookie = Cookie("token", token).apply {
+            isHttpOnly = true
+            secure = true // HTTPS only
+            path = "/"
+            maxAge = 86400 // 24시간
+            setAttribute("SameSite", "Strict")
+        }
+        response.addCookie(cookie)
+
+        return ResponseEntity.ok(AuthResponse(null, "로그인 성공"))
+    }
+
+    @PostMapping("/logout")
+    fun logout(response: HttpServletResponse): ResponseEntity<AuthResponse> {
+        // 쿠키 삭제
+        val cookie = Cookie("token", "").apply {
+            isHttpOnly = true
+            secure = true
+            path = "/"
+            maxAge = 0
+            setAttribute("SameSite", "Strict")
+        }
+        response.addCookie(cookie)
+
+        return ResponseEntity.ok(AuthResponse(null, "로그아웃 성공"))
     }
 }

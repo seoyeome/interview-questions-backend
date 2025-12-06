@@ -4,6 +4,7 @@ import com.example.interview.domain.user.domain.AuthProvider
 import com.example.interview.domain.user.domain.User
 import com.example.interview.domain.user.domain.UserRepository
 import com.example.interview.domain.user.domain.UserRole
+import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Value
@@ -12,7 +13,6 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 import org.springframework.stereotype.Component
-import org.springframework.web.util.UriComponentsBuilder
 
 @Component
 class OAuth2AuthenticationSuccessHandler(
@@ -56,13 +56,18 @@ class OAuth2AuthenticationSuccessHandler(
         // JWT 토큰 생성
         val jwtToken = jwtTokenProvider.generateToken(user.id!!, user.email)
 
-        // 프론트엔드로 리다이렉트 (토큰 포함)
-        val targetUrl = UriComponentsBuilder.fromUriString(redirectUri)
-            .queryParam("token", jwtToken)
-            .build()
-            .toUriString()
+        // HttpOnly 쿠키로 토큰 설정
+        val cookie = Cookie("token", jwtToken).apply {
+            isHttpOnly = true
+            secure = true // HTTPS only
+            path = "/"
+            maxAge = 86400 // 24시간
+            setAttribute("SameSite", "None") // Cross-site 쿠키 허용 (OAuth 리다이렉트에 필요)
+        }
+        response.addCookie(cookie)
 
-        redirectStrategy.sendRedirect(request, response, targetUrl)
+        // 프론트엔드로 리다이렉트 (토큰은 쿠키에 있으므로 URL에서 제거)
+        redirectStrategy.sendRedirect(request, response, redirectUri)
     }
 
     private fun extractKakaoUserInfo(oAuth2User: OAuth2User): OAuth2UserInfo {
