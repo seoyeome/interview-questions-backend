@@ -3,6 +3,7 @@ package com.example.interview.global.error
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
@@ -23,6 +24,23 @@ class GlobalExceptionHandler {
             message = e.message ?: "비즈니스 로직 오류가 발생했습니다."
         )
         return ResponseEntity.status(e.status).body(response)
+    }
+
+    /**
+     * @Valid 검증 실패 처리
+     * 사용자 입력값 검증 실패 시 발생하는 예외 처리
+     */
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
+        val errorMessage = e.bindingResult.fieldErrors
+            .firstOrNull()?.defaultMessage ?: "입력값이 올바르지 않습니다."
+
+        logger.warn("Validation failed: {}", errorMessage)
+        val response = ErrorResponse(
+            status = HttpStatus.BAD_REQUEST.value(),
+            message = errorMessage
+        )
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
     }
 
     /**
