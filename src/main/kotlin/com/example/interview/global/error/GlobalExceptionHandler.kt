@@ -37,6 +37,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(DuplicateSubCategoryNameException::class)
     fun handleDuplicateSubCategoryNameException(e: DuplicateSubCategoryNameException): ResponseEntity<ErrorResponse> {
+        logger.warn("DuplicateSubCategoryNameException occurred: {}", e.message)
         val response = ErrorResponse(
             status = HttpStatus.CONFLICT.value(),
             message = e.message ?: "이미 존재하는 서브 카테고리 이름입니다."
@@ -46,6 +47,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidSubCategoryNameException::class)
     fun handleInvalidSubCategoryNameException(e: InvalidSubCategoryNameException): ResponseEntity<ErrorResponse> {
+        logger.warn("InvalidSubCategoryNameException occurred: {}", e.message)
         val response = ErrorResponse(
             status = HttpStatus.BAD_REQUEST.value(),
             message = e.message ?: "유효하지 않은 서브 카테고리 이름입니다."
@@ -55,6 +57,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(QuestionNotFoundException::class)
     fun handleQuestionNotFoundException(e: QuestionNotFoundException): ResponseEntity<ErrorResponse> {
+        logger.warn("QuestionNotFoundException occurred: {}", e.message)
         val response = ErrorResponse(
             status = HttpStatus.NOT_FOUND.value(),
             message = e.message ?: "질문을 찾을 수 없습니다."
@@ -64,6 +67,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(DuplicateQuestionContentException::class)
     fun handleDuplicateQuestionContentException(e: DuplicateQuestionContentException): ResponseEntity<ErrorResponse> {
+        logger.warn("DuplicateQuestionContentException occurred: {}", e.message)
         val response = ErrorResponse(
             status = HttpStatus.CONFLICT.value(),
             message = e.message ?: "이미 존재하는 질문 내용입니다."
@@ -73,6 +77,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidQuestionContentException::class)
     fun handleInvalidQuestionContentException(e: InvalidQuestionContentException): ResponseEntity<ErrorResponse> {
+        logger.warn("InvalidQuestionContentException occurred: {}", e.message)
         val response = ErrorResponse(
             status = HttpStatus.BAD_REQUEST.value(),
             message = e.message ?: "유효하지 않은 질문 내용입니다."
@@ -82,6 +87,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidQuestionDifficultyException::class)
     fun handleInvalidQuestionDifficultyException(e: InvalidQuestionDifficultyException): ResponseEntity<ErrorResponse> {
+        logger.warn("InvalidQuestionDifficultyException occurred: {}", e.message)
         val response = ErrorResponse(
             status = HttpStatus.BAD_REQUEST.value(),
             message = e.message ?: "유효하지 않은 질문 난이도입니다."
