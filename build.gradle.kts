@@ -62,6 +62,7 @@ dependencies {
     // 모니터링
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus")
+    implementation("io.micrometer:micrometer-registry-otlp")
 
     // Sentry (에러 추적)
     implementation("io.sentry:sentry-spring-boot-starter-jakarta:7.0.0")

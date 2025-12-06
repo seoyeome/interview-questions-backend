@@ -48,8 +48,27 @@ logging:
     org.springframework.web: INFO
     org.hibernate: INFO
 
+# OAuth2 리다이렉트 URI
+app:
+  oauth2:
+    redirect-uri: https://interview-questions-frontend-zeta.vercel.app/auth/callback
+
 sentry:
   dsn: ${SENTRY_DSN}
   environment: production
   traces-sample-rate: 1.0
   enable-tracing: true
+
+# Grafana Cloud (메트릭)
+management:
+  otlp:
+    metrics:
+      export:
+        url: ${GRAFANA_OTLP_ENDPOINT:https://otlp-gateway-prod-ap-northeast-0.grafana.net/otlp/v1/metrics}
+        headers:
+          Authorization: Bearer ${GRAFANA_INSTANCE_ID}:${GRAFANA_API_KEY}
+  metrics:
+    export:
+      otlp:
+        enabled: true
+        step: 60s
