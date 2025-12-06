@@ -26,8 +26,7 @@ class AuthController(
 
     @PostMapping("/signup")
     fun signup(
-        @Valid @RequestBody request: SignupRequest,
-        response: HttpServletResponse
+        @Valid @RequestBody request: SignupRequest
     ): ResponseEntity<AuthResponse> {
         // 이메일 중복 체크
         if (userRepository.existsByEmail(request.email)) {
@@ -36,7 +35,7 @@ class AuthController(
         }
 
         // 사용자 생성
-        val user = userRepository.save(
+        userRepository.save(
             User(
                 email = request.email,
                 name = request.name,
@@ -46,20 +45,8 @@ class AuthController(
             )
         )
 
-        // JWT 토큰 생성
-        val token = jwtTokenProvider.generateToken(user.id!!, user.email)
-
-        // HttpOnly 쿠키로 토큰 설정
-        val cookie = Cookie("token", token).apply {
-            isHttpOnly = true
-            secure = true // HTTPS only
-            path = "/"
-            maxAge = 86400 // 24시간
-            setAttribute("SameSite", "Strict")
-        }
-        response.addCookie(cookie)
-
-        return ResponseEntity.ok(AuthResponse(null, "회원가입 성공"))
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(AuthResponse(null, "회원가입 성공"))
     }
 
     @PostMapping("/login")
