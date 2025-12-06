@@ -4,6 +4,7 @@ import com.example.interview.domain.question.exception.*
 import com.example.interview.domain.subcategory.exception.DuplicateSubCategoryNameException
 import com.example.interview.domain.subcategory.exception.InvalidSubCategoryNameException
 import com.example.interview.domain.subcategory.exception.SubCategoryNotFoundException
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -12,8 +13,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 @RestControllerAdvice
 class GlobalExceptionHandler {
 
+    private val logger = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
+
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleIllegalArgumentException(e: IllegalArgumentException): ResponseEntity<ErrorResponse> {
+        logger.warn("IllegalArgumentException occurred: {}", e.message, e)
         val response = ErrorResponse(
             status = HttpStatus.BAD_REQUEST.value(),
             message = e.message ?: "잘못된 요청입니다."
@@ -23,6 +27,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(SubCategoryNotFoundException::class)
     fun handleSubCategoryNotFoundException(e: SubCategoryNotFoundException): ResponseEntity<ErrorResponse> {
+        logger.warn("SubCategoryNotFoundException occurred: {}", e.message)
         val response = ErrorResponse(
             status = HttpStatus.NOT_FOUND.value(),
             message = e.message ?: "서브 카테고리를 찾을 수 없습니다."
@@ -86,6 +91,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception): ResponseEntity<ErrorResponse> {
+        logger.error("Unexpected exception occurred: {}", e.message, e)
         val response = ErrorResponse(
             status = HttpStatus.INTERNAL_SERVER_ERROR.value(),
             message = "서버 내부 오류가 발생했습니다."
