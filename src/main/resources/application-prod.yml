@@ -40,7 +40,18 @@ management:
     metrics:
       export:
         enabled: true
-        
+  otlp:
+    metrics:
+      export:
+        url: ${GRAFANA_OTLP_ENDPOINT:https://otlp-gateway-prod-ap-northeast-0.grafana.net/otlp/v1/metrics}
+        headers:
+          Authorization: Bearer ${GRAFANA_INSTANCE_ID}:${GRAFANA_API_KEY}
+  metrics:
+    export:
+      otlp:
+        enabled: true
+        step: 60s
+
 logging:
   level:
     root: INFO
@@ -58,17 +69,3 @@ sentry:
   environment: production
   traces-sample-rate: 1.0
   enable-tracing: true
-
-# Grafana Cloud (메트릭)
-management:
-  otlp:
-    metrics:
-      export:
-        url: ${GRAFANA_OTLP_ENDPOINT:https://otlp-gateway-prod-ap-northeast-0.grafana.net/otlp/v1/metrics}
-        headers:
-          Authorization: Bearer ${GRAFANA_INSTANCE_ID}:${GRAFANA_API_KEY}
-  metrics:
-    export:
-      otlp:
-        enabled: true
-        step: 60s
