@@ -1,9 +1,5 @@
 package com.example.interview.global.error
 
-import com.example.interview.domain.question.exception.*
-import com.example.interview.domain.subcategory.exception.DuplicateSubCategoryNameException
-import com.example.interview.domain.subcategory.exception.InvalidSubCategoryNameException
-import com.example.interview.domain.subcategory.exception.SubCategoryNotFoundException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,6 +11,23 @@ class GlobalExceptionHandler {
 
     private val logger = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
 
+    /**
+     * 비즈니스 예외 통합 처리
+     * 모든 BusinessException을 상속받은 예외는 여기서 처리됨
+     */
+    @ExceptionHandler(BusinessException::class)
+    fun handleBusinessException(e: BusinessException): ResponseEntity<ErrorResponse> {
+        logger.warn("{} occurred: {}", e.javaClass.simpleName, e.message)
+        val response = ErrorResponse(
+            status = e.status.value(),
+            message = e.message ?: "비즈니스 로직 오류가 발생했습니다."
+        )
+        return ResponseEntity.status(e.status).body(response)
+    }
+
+    /**
+     * IllegalArgumentException 처리
+     */
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleIllegalArgumentException(e: IllegalArgumentException): ResponseEntity<ErrorResponse> {
         logger.warn("IllegalArgumentException occurred: {}", e.message, e)
@@ -25,76 +38,9 @@ class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
     }
 
-    @ExceptionHandler(SubCategoryNotFoundException::class)
-    fun handleSubCategoryNotFoundException(e: SubCategoryNotFoundException): ResponseEntity<ErrorResponse> {
-        logger.warn("SubCategoryNotFoundException occurred: {}", e.message)
-        val response = ErrorResponse(
-            status = HttpStatus.NOT_FOUND.value(),
-            message = e.message ?: "서브 카테고리를 찾을 수 없습니다."
-        )
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response)
-    }
-
-    @ExceptionHandler(DuplicateSubCategoryNameException::class)
-    fun handleDuplicateSubCategoryNameException(e: DuplicateSubCategoryNameException): ResponseEntity<ErrorResponse> {
-        logger.warn("DuplicateSubCategoryNameException occurred: {}", e.message)
-        val response = ErrorResponse(
-            status = HttpStatus.CONFLICT.value(),
-            message = e.message ?: "이미 존재하는 서브 카테고리 이름입니다."
-        )
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(response)
-    }
-
-    @ExceptionHandler(InvalidSubCategoryNameException::class)
-    fun handleInvalidSubCategoryNameException(e: InvalidSubCategoryNameException): ResponseEntity<ErrorResponse> {
-        logger.warn("InvalidSubCategoryNameException occurred: {}", e.message)
-        val response = ErrorResponse(
-            status = HttpStatus.BAD_REQUEST.value(),
-            message = e.message ?: "유효하지 않은 서브 카테고리 이름입니다."
-        )
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
-    }
-
-    @ExceptionHandler(QuestionNotFoundException::class)
-    fun handleQuestionNotFoundException(e: QuestionNotFoundException): ResponseEntity<ErrorResponse> {
-        logger.warn("QuestionNotFoundException occurred: {}", e.message)
-        val response = ErrorResponse(
-            status = HttpStatus.NOT_FOUND.value(),
-            message = e.message ?: "질문을 찾을 수 없습니다."
-        )
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response)
-    }
-
-    @ExceptionHandler(DuplicateQuestionContentException::class)
-    fun handleDuplicateQuestionContentException(e: DuplicateQuestionContentException): ResponseEntity<ErrorResponse> {
-        logger.warn("DuplicateQuestionContentException occurred: {}", e.message)
-        val response = ErrorResponse(
-            status = HttpStatus.CONFLICT.value(),
-            message = e.message ?: "이미 존재하는 질문 내용입니다."
-        )
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(response)
-    }
-
-    @ExceptionHandler(InvalidQuestionContentException::class)
-    fun handleInvalidQuestionContentException(e: InvalidQuestionContentException): ResponseEntity<ErrorResponse> {
-        logger.warn("InvalidQuestionContentException occurred: {}", e.message)
-        val response = ErrorResponse(
-            status = HttpStatus.BAD_REQUEST.value(),
-            message = e.message ?: "유효하지 않은 질문 내용입니다."
-        )
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
-    }
-
-    @ExceptionHandler(InvalidQuestionDifficultyException::class)
-    fun handleInvalidQuestionDifficultyException(e: InvalidQuestionDifficultyException): ResponseEntity<ErrorResponse> {
-        logger.warn("InvalidQuestionDifficultyException occurred: {}", e.message)
-        val response = ErrorResponse(
-            status = HttpStatus.BAD_REQUEST.value(),
-            message = e.message ?: "유효하지 않은 질문 난이도입니다."
-        )
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
-    }
-
+    /**
+     * 예상치 못한 예외 처리
+     */
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception): ResponseEntity<ErrorResponse> {
         logger.error("Unexpected exception occurred: {}", e.message, e)
