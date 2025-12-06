@@ -45,4 +45,11 @@ jwt:
 # OAuth2 리다이렉트 URI
 app:
   oauth2:
-    redirect-uri: http://localhost:3000/auth/callback 
+    redirect-uri: http://localhost:3000/auth/callback
+
+# Sentry (에러 추적)
+sentry:
+  dsn: ${SENTRY_DSN}
+  environment: development
+  traces-sample-rate: 1.0
+  enable-tracing: true
