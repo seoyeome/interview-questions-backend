@@ -55,8 +55,9 @@ management:
 logging:
   level:
     root: INFO
-    com.example: INFO
-    org.springframework.web: INFO
+    com.example: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
     org.hibernate: INFO
 
 # OAuth2 리다이렉트 URI
