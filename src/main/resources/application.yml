@@ -49,7 +49,7 @@ app:
 
 # Sentry (에러 추적)
 sentry:
-  dsn: ${SENTRY_DSN}
+  dsn: ${SENTRY_DSN:}
   environment: development
   traces-sample-rate: 1.0
   enable-tracing: true

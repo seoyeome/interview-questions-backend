@@ -50,6 +50,16 @@ class JwtAuthenticationFilter(
     }
 
     private fun getJwtFromRequest(request: HttpServletRequest): String? {
+        // 1. 쿠키에서 토큰 확인
+        val cookies = request.cookies
+        if (cookies != null) {
+            val tokenCookie = cookies.find { it.name == "token" }
+            if (tokenCookie != null && StringUtils.hasText(tokenCookie.value)) {
+                return tokenCookie.value
+            }
+        }
+
+        // 2. Authorization 헤더에서 토큰 확인 (폴백)
         val bearerToken = request.getHeader("Authorization")
         return if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             bearerToken.substring(7)

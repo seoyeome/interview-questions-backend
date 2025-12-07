@@ -18,10 +18,7 @@ class User(
     val email: String,
 
     @Column(nullable = false)
-    val name: String,
-
-    @Column(name = "profile_image_url")
-    val profileImageUrl: String? = null,
+    var nickname: String,
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -30,8 +27,11 @@ class User(
     @Column(name = "provider_id")
     val providerId: String? = null,
 
+    @Column(name = "oauth_access_token", length = 500)
+    var oauthAccessToken: String? = null,
+
     @Column(name = "password")
-    val password: String? = null,
+    var password: String? = null,
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

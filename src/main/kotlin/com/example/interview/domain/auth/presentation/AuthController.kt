@@ -2,11 +2,11 @@ package com.example.interview.domain.auth.presentation
 
 import com.example.interview.domain.auth.presentation.dto.LoginRequest
 import com.example.interview.domain.auth.presentation.dto.SignupRequest
-import com.example.interview.domain.auth.presentation.dto.AuthResponse
 import com.example.interview.domain.user.domain.AuthProvider
 import com.example.interview.domain.user.domain.User
 import com.example.interview.domain.user.domain.UserRepository
 import com.example.interview.domain.user.domain.UserRole
+import com.example.interview.infrastructure.common.dto.ApiResponse
 import com.example.interview.infrastructure.security.JwtTokenProvider
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletResponse
@@ -27,18 +27,18 @@ class AuthController(
     @PostMapping("/signup")
     fun signup(
         @Valid @RequestBody request: SignupRequest
-    ): ResponseEntity<AuthResponse> {
+    ): ResponseEntity<ApiResponse<Unit>> {
         // 이메일 중복 체크
         if (userRepository.existsByEmail(request.email)) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(AuthResponse(null, "이미 존재하는 이메일입니다"))
+                .body(ApiResponse.error("이미 존재하는 이메일입니다"))
         }
 
         // 사용자 생성
         userRepository.save(
             User(
                 email = request.email,
-                name = request.name,
+                nickname = request.nickname,
                 password = passwordEncoder.encode(request.password),
                 provider = AuthProvider.LOCAL,
                 role = UserRole.USER
@@ -46,29 +46,35 @@ class AuthController(
         )
 
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(AuthResponse(null, "회원가입 성공"))
+            .body(ApiResponse.success("회원가입 성공"))
     }
 
     @PostMapping("/login")
     fun login(
         @Valid @RequestBody request: LoginRequest,
         response: HttpServletResponse
-    ): ResponseEntity<AuthResponse> {
+    ): ResponseEntity<ApiResponse<Unit>> {
         // 사용자 조회
         val user = userRepository.findByEmail(request.email).orElse(null)
             ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(AuthResponse(null, "이메일 또는 비밀번호가 올바르지 않습니다"))
+                .body(ApiResponse.error("이메일 또는 비밀번호가 올바르지 않습니다"))
+
+        // 탈퇴한 사용자 로그인 불가
+        if (user.status == com.example.interview.domain.user.domain.UserStatus.DELETED) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ApiResponse.error("탈퇴한 계정입니다"))
+        }
 
         // OAuth 사용자는 일반 로그인 불가
         if (user.provider != AuthProvider.LOCAL) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(AuthResponse(null, "${user.provider.name} 로그인을 이용해주세요"))
+                .body(ApiResponse.error("${user.provider.name} 로그인을 이용해주세요"))
         }
 
         // 비밀번호 검증
         if (!passwordEncoder.matches(request.password, user.password)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(AuthResponse(null, "이메일 또는 비밀번호가 올바르지 않습니다"))
+                .body(ApiResponse.error("이메일 또는 비밀번호가 올바르지 않습니다"))
         }
 
         // JWT 토큰 생성
@@ -80,25 +86,25 @@ class AuthController(
             secure = true // HTTPS only
             path = "/"
             maxAge = 86400 // 24시간
-            setAttribute("SameSite", "Strict")
+            setAttribute("SameSite", "None") // Cross-origin 요청을 위해 None으로 설정
         }
         response.addCookie(cookie)
 
-        return ResponseEntity.ok(AuthResponse(null, "로그인 성공"))
+        return ResponseEntity.ok(ApiResponse.success("로그인 성공"))
     }
 
     @PostMapping("/logout")
-    fun logout(response: HttpServletResponse): ResponseEntity<AuthResponse> {
+    fun logout(response: HttpServletResponse): ResponseEntity<ApiResponse<Unit>> {
         // 쿠키 삭제
         val cookie = Cookie("token", "").apply {
             isHttpOnly = true
             secure = true
             path = "/"
             maxAge = 0
-            setAttribute("SameSite", "Strict")
+            setAttribute("SameSite", "None")
         }
         response.addCookie(cookie)
 
-        return ResponseEntity.ok(AuthResponse(null, "로그아웃 성공"))
+        return ResponseEntity.ok(ApiResponse.success("로그아웃 성공"))
     }
 }
