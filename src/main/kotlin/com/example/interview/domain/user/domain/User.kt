@@ -50,6 +50,9 @@ class User(
     @Column(name = "retention_until")
     var retentionUntil: LocalDateTime? = null,
 
+    @Column(name = "tutorial_completed", nullable = false)
+    var tutorialCompleted: Boolean = false,
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     var createdAt: LocalDateTime = LocalDateTime.now(),

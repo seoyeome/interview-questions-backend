@@ -48,6 +48,57 @@ class UserController(
         return ResponseEntity.ok(ApiResponse.success(profileData))
     }
 
+    /**
+     * 튜토리얼 완료 여부 조회
+     */
+    @GetMapping("/tutorial-status")
+    fun getTutorialStatus(request: HttpServletRequest): ResponseEntity<ApiResponse<Boolean>> {
+        val userId = getUserIdFromToken(request)
+            ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+
+        val user = userRepository.findById(userId).orElseThrow {
+            throw IllegalArgumentException("사용자를 찾을 수 없습니다")
+        }
+
+        return ResponseEntity.ok(ApiResponse.success(user.tutorialCompleted))
+    }
+
+    /**
+     * 튜토리얼 완료 처리
+     */
+    @PostMapping("/tutorial-complete")
+    fun completeTutorial(request: HttpServletRequest): ResponseEntity<ApiResponse<Unit>> {
+        val userId = getUserIdFromToken(request)
+            ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+
+        val user = userRepository.findById(userId).orElseThrow {
+            throw IllegalArgumentException("사용자를 찾을 수 없습니다")
+        }
+
+        user.tutorialCompleted = true
+        userRepository.save(user)
+
+        return ResponseEntity.ok(ApiResponse.success("튜토리얼이 완료되었습니다"))
+    }
+
+    /**
+     * 튜토리얼 재시작 (다시 보기)
+     */
+    @PostMapping("/tutorial-reset")
+    fun resetTutorial(request: HttpServletRequest): ResponseEntity<ApiResponse<Unit>> {
+        val userId = getUserIdFromToken(request)
+            ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+
+        val user = userRepository.findById(userId).orElseThrow {
+            throw IllegalArgumentException("사용자를 찾을 수 없습니다")
+        }
+
+        user.tutorialCompleted = false
+        userRepository.save(user)
+
+        return ResponseEntity.ok(ApiResponse.success("튜토리얼이 초기화되었습니다"))
+    }
+
     @PatchMapping("/nickname")
     fun updateNickname(
         @Valid @RequestBody request: UpdateNicknameRequest,
