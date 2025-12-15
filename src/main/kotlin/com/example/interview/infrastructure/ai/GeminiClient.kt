@@ -33,7 +33,7 @@ class GeminiClient(
                     temperature = 0.9,
                     topK = 40,
                     topP = 0.95,
-                    maxOutputTokens = 1024
+                    maxOutputTokens = 512
                 )
             )
 
@@ -56,26 +56,21 @@ class GeminiClient(
 
     private fun buildPrompt(category: String, subCategory: String, difficulty: String): String {
         return """
-            당신은 면접 질문 생성 전문가입니다.
-            주어진 카테고리와 서브카테고리, 난이도에 맞는 기술 면접 질문과 구체적인 모범 답변을 생성해주세요.
+            면접 질문 생성 전문가로서 기술 면접 질문과 모범 답변을 생성하세요.
 
-            응답 형식 (반드시 이 JSON 형식으로만 응답하세요):
-            {
-              "content": "질문 내용",
-              "explanation": "모범 답변 내용 (구체적이고 실무적으로 작성)",
-              "difficulty": "EASY|MEDIUM|HARD"
-            }
+            JSON 형식으로만 응답:
+            {"content":"질문","explanation":"답변","difficulty":"$difficulty"}
 
             카테고리: $category
             서브카테고리: $subCategory
             난이도: $difficulty
 
-            규칙:
-            - 질문은 실제 면접에서 나올 법한 현실적인 질문이어야 합니다
-            - 모범 답변은 200-500자 사이로 구체적이고 실무적으로 작성하세요
-            - 답변에는 핵심 개념, 장단점, 실제 사용 예시를 포함하세요
-            - 난이도에 맞는 질문 수준을 유지하세요 (EASY: 기본 개념, MEDIUM: 실무 적용, HARD: 깊은 이해와 최적화)
-            - JSON 형식 외 다른 텍스트는 절대 포함하지 마세요
+            요구사항:
+            - 실제 면접 수준의 현실적 질문
+            - 답변: 200-500자, 구체적이고 실무적 작성
+            - 핵심 개념, 장단점, 사용 예시 포함
+            - 난이도별 수준 (EASY:기본개념, MEDIUM:실무적용, HARD:심화+최적화)
+            - JSON 외 텍스트 절대 금지
         """.trimIndent()
     }
 
