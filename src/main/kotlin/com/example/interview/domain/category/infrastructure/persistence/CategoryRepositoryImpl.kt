@@ -18,6 +18,10 @@ class CategoryRepositoryImpl(
         return jpaRepository.findByIdOrNull(id.value)?.toDomain()
     }
 
+    override fun findByName(name: String): Category? {
+        return jpaRepository.findByName(name)?.toDomain()
+    }
+
     override fun findAll(): List<Category> {
         return jpaRepository.findAll().map { it.toDomain() }
     }

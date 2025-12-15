@@ -19,6 +19,10 @@ class SubCategoryRepositoryImpl(
         return jpaRepository.findByIdOrNull(id.value)?.toDomain()
     }
 
+    override fun findByNameAndCategoryId(name: String, categoryId: CategoryId): SubCategory? {
+        return jpaRepository.findByNameAndCategoryId(name, categoryId.value)?.toDomain()
+    }
+
     override fun findAll(): List<SubCategory> {
         return jpaRepository.findAll().map { it.toDomain() }
     }
