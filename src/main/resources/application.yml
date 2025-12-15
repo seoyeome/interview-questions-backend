@@ -36,6 +36,12 @@ spring:
 gemini:
   api:
     key: ${GEMINI_API_KEY}
+  model: ${GEMINI_MODEL:gemini-2.0-flash}
+
+# AI Quota 설정
+ai:
+  quota:
+    daily-limit: 1  # 1일 AI 생성 횟수 제한 (Gemini 무료: 하루 20회, 1분당 5회)
 
 # JWT 설정
 jwt:
