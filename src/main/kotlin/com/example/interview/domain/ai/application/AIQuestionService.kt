@@ -111,13 +111,26 @@ class AIQuestionService(
         subCategoryName: String,
         difficulty: String
     ): AIQuestionResponse {
-        // 1. 카테고리/서브카테고리 ID 조회
-        val category = categoryRepository.findByName(categoryName)
-            ?: throw IllegalArgumentException("카테고리를 찾을 수 없습니다: $categoryName")
-        val subCategory = subCategoryRepository.findByNameAndCategoryId(
-            name = subCategoryName,
-            categoryId = category.id
-        ) ?: throw IllegalArgumentException("서브카테고리를 찾을 수 없습니다: $subCategoryName")
+        // 1. "ALL"인 경우 랜덤 카테고리/서브카테고리 선택
+        val category = if (categoryName == "ALL") {
+            val allCategories = categoryRepository.findAll()
+            if (allCategories.isEmpty()) throw IllegalArgumentException("카테고리가 존재하지 않습니다")
+            allCategories.random()
+        } else {
+            categoryRepository.findByName(categoryName)
+                ?: throw IllegalArgumentException("카테고리를 찾을 수 없습니다: $categoryName")
+        }
+
+        val subCategory = if (subCategoryName == "ALL") {
+            val allSubCategories = subCategoryRepository.findAllByCategoryId(category.id)
+            if (allSubCategories.isEmpty()) throw IllegalArgumentException("서브카테고리가 존재하지 않습니다")
+            allSubCategories.random()
+        } else {
+            subCategoryRepository.findByNameAndCategoryId(
+                name = subCategoryName,
+                categoryId = category.id
+            ) ?: throw IllegalArgumentException("서브카테고리를 찾을 수 없습니다: $subCategoryName")
+        }
 
         val difficultyEnum = QuestionDifficulty.valueOf(difficulty)
 
@@ -148,10 +161,10 @@ class AIQuestionService(
             throw IllegalStateException("오늘의 AI 질문 생성 횟수를 모두 사용했습니다. 내일 다시 시도해주세요.")
         }
 
-        // 5. Gemini API로 새 질문 생성
+        // 5. Gemini API로 새 질문 생성 (선택된 실제 카테고리/서브카테고리 사용)
         val aiResult = geminiClient.generateQuestion(
-            category = categoryName,
-            subCategory = subCategoryName,
+            category = category.name,
+            subCategory = subCategory.name,
             difficulty = difficulty
         ) ?: throw IllegalStateException("AI 질문 생성에 실패했습니다. 잠시 후 다시 시도해주세요.")
 
