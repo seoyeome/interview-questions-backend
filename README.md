@@ -5,10 +5,9 @@
 ## 🛠 기술 스택
 
 ### 프레임워크 & 라이브러리
-- [Spring Boot](https://spring.io/projects/spring-boot) 3.2 - 자바/코틀린 웹 애플리케이션 프레임워크
+- [Spring Boot](https://spring.io/projects/spring-boot) 3.2.3 - 자바/코틀린 웹 애플리케이션 프레임워크
 - [Kotlin](https://kotlinlang.org/) - JVM 기반 프로그래밍 언어
 - [Spring Data JPA](https://spring.io/projects/spring-data-jpa) - ORM 프레임워크
-- [QueryDSL](http://querydsl.com/) - 타입 안전 쿼리 빌더
 - [Flyway](https://flywaydb.org/) - 데이터베이스 마이그레이션 관리
 
 ### 인증 & 보안
@@ -18,7 +17,7 @@
 - 개인정보보호법 준수 Soft Delete 구현
 
 ### 데이터베이스
-- [PostgreSQL](https://www.postgresql.org/) - 관계형 데이터베이스
+- [PostgreSQL](https://www.postgresql.org/) 14.18 - 관계형 데이터베이스
 
 ### AI 통합
 - [Google Gemini API](https://ai.google.dev/) - AI 기반 질문 설명 생성
@@ -81,9 +80,9 @@
 ## 🚀 시작하기
 
 ### 필수 요구사항
-- JDK 17 이상
-- PostgreSQL 14 이상
-- Docker (선택 사항)
+- JDK 21
+- PostgreSQL 14.18 이상
+- Docker 및 Docker Compose (선택 사항)
 
 ### 설치 방법
 
@@ -95,46 +94,27 @@ cd interview-questions-backend
 
 2. 환경 변수 설정
 ```bash
-# .env.example 파일을 복사하여 .env 파일 생성
-cp ../.env.example ../.env
-
-# 필요한 경우 .env 파일 편집하여 실제 값으로 변경
+# 프로젝트 루트에 .envrc 파일 생성 (direnv 사용 시)
+export DB_USERNAME=postgres
+export DB_PASSWORD=your_password
+export JWT_SECRET=your_jwt_secret_key
+export KAKAO_CLIENT_ID=your_kakao_client_id
+export KAKAO_CLIENT_SECRET=your_kakao_client_secret
+export GEMINI_API_KEY=your_gemini_api_key
+export SENTRY_DSN=your_sentry_dsn  # 선택사항
 ```
 
-3. 애플리케이션 빌드
+3. PostgreSQL 시작 (Docker 사용 시)
 ```bash
-./gradlew build
+docker-compose up -d
 ```
 
 4. 애플리케이션 실행
 ```bash
-# 환경 변수 설정 후 실행
-export DB_USERNAME=postgres
-export DB_PASSWORD=postgres
-export GEMINI_API_KEY=your_gemini_api_key
-export KAKAO_CLIENT_ID=your_kakao_client_id
-export KAKAO_CLIENT_SECRET=your_kakao_client_secret
-export JWT_SECRET=your_jwt_secret
-./gradlew bootRun
+./gradlew bootRun --args="--spring.profiles.active=local"
 ```
 
-또는 Docker를 사용하여 실행할 수 있습니다:
-
-```bash
-# 백엔드만 실행
-docker build -t interview-questions-backend .
-docker run -p 8080:8080 \
-  -e DB_USERNAME=postgres \
-  -e DB_PASSWORD=postgres \
-  -e GEMINI_API_KEY=your_key \
-  interview-questions-backend
-
-# 또는 Docker Compose로 전체 스택 실행
-cd ..
-docker-compose up -d
-```
-
-이제 [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)에서 API 문서를 확인할 수 있습니다.
+이제 애플리케이션이 [http://localhost:8080](http://localhost:8080)에서 실행됩니다.
 
 ## 📁 프로젝트 구조
 
@@ -266,7 +246,3 @@ src/
 - 비밀번호는 BCrypt로 해시화
 - OAuth 액세스 토큰은 암호화된 데이터베이스에 저장
 - 개인정보보호법 준수를 위한 30일 데이터 보관 정책
-
-## 📝 라이선스
-
-이 프로젝트는 MIT 라이선스를 따릅니다.
