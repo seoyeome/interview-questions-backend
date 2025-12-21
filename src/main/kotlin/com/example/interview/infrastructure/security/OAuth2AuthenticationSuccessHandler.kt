@@ -21,7 +21,9 @@ class OAuth2AuthenticationSuccessHandler(
     private val jwtTokenProvider: JwtTokenProvider,
     private val userRepository: UserRepository,
     private val authorizedClientService: OAuth2AuthorizedClientService,
-    @Value("\${app.oauth2.redirect-uri}") private val redirectUri: String
+    @Value("\${app.oauth2.redirect-uri}") private val redirectUri: String,
+    @Value("\${app.cookie.secure:true}") private val cookieSecure: Boolean,
+    @Value("\${app.cookie.same-site:None}") private val cookieSameSite: String
 ) : SimpleUrlAuthenticationSuccessHandler() {
 
     override fun onAuthenticationSuccess(
@@ -77,10 +79,12 @@ class OAuth2AuthenticationSuccessHandler(
         // HttpOnly 쿠키로 토큰 설정
         val cookie = Cookie("token", jwtToken).apply {
             isHttpOnly = true
-            secure = true // HTTPS only
+            secure = cookieSecure
             path = "/"
             maxAge = 86400 // 24시간
-            setAttribute("SameSite", "None") // Cross-site 쿠키 허용 (OAuth 리다이렉트에 필요)
+            if (cookieSameSite.isNotBlank()) {
+                setAttribute("SameSite", cookieSameSite)
+            }
         }
         response.addCookie(cookie)
 
