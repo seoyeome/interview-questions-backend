@@ -60,19 +60,16 @@ logging:
     org.springframework.security: DEBUG
     org.hibernate: INFO
 
-# OAuth2 리다이렉트 URI
+# OAuth2 리다이렉트 URI (Vercel Rewrites를 통해 Same-Site로 처리됨)
 app:
   oauth2:
     redirect-uri: https://interview-questions-frontend-zeta.vercel.app/auth/callback
+  cookie:
+    secure: true  # HTTPS에서만 쿠키 전송
+    same-site: "Lax"  # Same-Site 쿠키 (Vercel Rewrites로 동일 도메인 처리)
 
 sentry:
   dsn: ${SENTRY_DSN}
   environment: production
   traces-sample-rate: 1.0
   enable-tracing: true
-
-# 쿠키 설정 (프로덕션 환경)
-app:
-  cookie:
-    secure: true  # HTTPS에서만 쿠키 전송
-    same-site: "None"  # Cross-site 쿠키 허용 (OAuth 리다이렉트에 필요)
