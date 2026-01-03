@@ -1,7 +1,8 @@
 -- AWS 질문에 대한 답변 추가
 
 UPDATE questions SET explanation =
-'**AWS(Amazon Web Services)란?**
+$md$
+**AWS(Amazon Web Services)란?**
 아마존이 제공하는 클라우드 컴퓨팅 플랫폼으로, 서버, 스토리지, 데이터베이스, 네트워킹 등 IT 인프라를 온디맨드로 제공하는 서비스입니다.
 
 **널리 사용되는 이유**
@@ -38,11 +39,14 @@ UPDATE questions SET explanation =
 - Lambda: 서버리스 컴퓨팅
 
 **실무 경험**
-온프레미스에서 AWS로 마이그레이션하여 서버 관리 부담을 90% 줄이고, Auto Scaling으로 트래픽 급증 시 자동 대응하여 서비스 안정성을 확보했습니다.'
+온프레미스에서 AWS로 마이그레이션하여 서버 관리 부담을 90% 줄이고, Auto Scaling으로 트래픽 급증 시 자동 대응하여 서비스 안정성을 확보했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000000';
 
 UPDATE questions SET explanation =
-'**EC2 (Elastic Compute Cloud)**
+$md$
+**EC2 (Elastic Compute Cloud)**
 가상 서버를 제공하는 서비스로, 원하는 사양의 서버를 몇 분 만에 생성하고 사용할 수 있습니다.
 
 **주요 특징**
@@ -85,11 +89,14 @@ aws ec2 run-instances --instance-type t2.micro --image-id ami-xxxxx
 - Intelligent-Tiering: 자동 최적화
 
 **실무 경험**
-사용자 업로드 이미지를 S3에 저장하고 CloudFront로 전 세계에 빠르게 배포했으며, Lifecycle Policy로 30일 이상 된 데이터를 Glacier로 이동하여 비용을 70% 절감했습니다.'
+사용자 업로드 이미지를 S3에 저장하고 CloudFront로 전 세계에 빠르게 배포했으며, Lifecycle Policy로 30일 이상 된 데이터를 Glacier로 이동하여 비용을 70% 절감했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000001';
 
 UPDATE questions SET explanation =
-'**리전 (Region)**
+$md$
+**리전 (Region)**
 AWS 데이터 센터가 위치한 물리적인 지역으로, 전 세계 30개 이상 존재합니다.
 
 **특징**
@@ -142,11 +149,14 @@ AWS 데이터 센터가 위치한 물리적인 지역으로, 전 세계 30개 �
 | 용도 | 글로벌 배포, DR | 고가용성 |
 
 **실무 경험**
-서울 리전의 3개 AZ에 EC2 인스턴스를 분산 배치하여 하나의 AZ 장애 시에도 서비스가 중단되지 않도록 했으며, 글로벌 서비스를 위해 서울, 도쿄, 버지니아 리전에 멀티 리전 배포를 구축했습니다.'
+서울 리전의 3개 AZ에 EC2 인스턴스를 분산 배치하여 하나의 AZ 장애 시에도 서비스가 중단되지 않도록 했으며, 글로벌 서비스를 위해 서울, 도쿄, 버지니아 리전에 멀티 리전 배포를 구축했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000002';
 
 UPDATE questions SET explanation =
-'**확장성 (Scalability)**
+$md$
+**확장성 (Scalability)**
 트래픽 증가에 따라 리소스를 늘리는 능력입니다.
 
 **수직 확장 (Scale Up)**
@@ -216,11 +226,14 @@ ELB (로드 밸런서)
 | 내구성 | S3, EBS 스냅샷 |
 
 **실무 경험**
-Auto Scaling으로 평소 2대에서 피크 시간 10대로 자동 확장하여 비용을 60% 절감했으며, Multi-AZ 배포로 AZ 장애 시에도 서비스 중단 없이 운영했습니다.'
+Auto Scaling으로 평소 2대에서 피크 시간 10대로 자동 확장하여 비용을 60% 절감했으며, Multi-AZ 배포로 AZ 장애 시에도 서비스 중단 없이 운영했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000003';
 
 UPDATE questions SET explanation =
-'**RDS (Relational Database Service)**
+$md$
+**RDS (Relational Database Service)**
 관리형 관계형 데이터베이스 서비스로, MySQL, PostgreSQL, Oracle 등을 제공합니다.
 
 **특징**
@@ -278,11 +291,14 @@ UPDATE questions SET explanation =
 - **DynamoDB 선택**: 빠른 속도, 대량 트래픽, 단순 조회
 
 **실무 경험**
-주문 시스템은 RDS로 트랜잭션 보장을 확보했고, 사용자 세션은 DynamoDB로 빠른 읽기/쓰기를 구현했습니다.'
+주문 시스템은 RDS로 트랜잭션 보장을 확보했고, 사용자 세션은 DynamoDB로 빠른 읽기/쓰기를 구현했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000004';
 
 UPDATE questions SET explanation =
-'**CloudFront란?**
+$md$
+**CloudFront란?**
 AWS의 CDN(Content Delivery Network) 서비스로, 전 세계 엣지 로케이션을 통해 콘텐츠를 빠르게 배포합니다.
 
 **동작 원리**
@@ -347,11 +363,14 @@ CloudFront Distribution
 - 소프트웨어 다운로드
 
 **실무 경험**
-S3에 저장된 이미지를 CloudFront로 배포하여 글로벌 사용자의 로딩 속도를 5초에서 0.5초로 단축했으며, S3 데이터 전송 비용을 80% 절감했습니다.'
+S3에 저장된 이미지를 CloudFront로 배포하여 글로벌 사용자의 로딩 속도를 5초에서 0.5초로 단축했으며, S3 데이터 전송 비용을 80% 절감했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000005';
 
 UPDATE questions SET explanation =
-'**AWS Lambda란?**
+$md$
+**AWS Lambda란?**
 서버를 관리하지 않고 코드를 실행할 수 있는 서버리스 컴퓨팅 서비스입니다.
 
 **주요 특징**
@@ -423,11 +442,14 @@ API Gateway → Lambda → DynamoDB
 - 이후 매우 저렴한 요금
 
 **실무 경험**
-사용자 이미지 업로드 시 Lambda로 자동 리사이징하여 EC2 서버 부하를 제거했고, 야간 배치 작업을 Lambda + CloudWatch Events로 대체하여 서버 비용을 100% 절감했습니다.'
+사용자 이미지 업로드 시 Lambda로 자동 리사이징하여 EC2 서버 부하를 제거했고, 야간 배치 작업을 Lambda + CloudWatch Events로 대체하여 서버 비용을 100% 절감했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000006';
 
 UPDATE questions SET explanation =
-'**S3 버킷 정책 (Bucket Policy)**
+$md$
+**S3 버킷 정책 (Bucket Policy)**
 S3 버킷에 대한 접근 권한을 JSON 형식으로 정의하는 리소스 기반 정책입니다.
 
 **주요 용도**
@@ -505,11 +527,14 @@ S3 버킷에 대한 접근 권한을 JSON 형식으로 정의하는 리소스 �
 - **버킷 정책 검증**: AWS Policy Simulator 사용
 
 **실무 경험**
-정적 웹사이트용 S3 버킷에 퍼블릭 읽기 정책을 적용하고, CloudFront OAI로만 접근하도록 제한하여 직접 S3 접근을 차단했습니다.'
+정적 웹사이트용 S3 버킷에 퍼블릭 읽기 정책을 적용하고, CloudFront OAI로만 접근하도록 제한하여 직접 S3 접근을 차단했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000007';
 
 UPDATE questions SET explanation =
-'**AWS CloudWatch란?**
+$md$
+**AWS CloudWatch란?**
 AWS 리소스와 애플리케이션을 모니터링하는 서비스로, 메트릭 수집, 로그 관리, 알람 설정 등을 제공합니다.
 
 **주요 기능**
@@ -598,11 +623,14 @@ cloudwatch.put_metric_data(
 ```
 
 **실무 경험**
-CloudWatch 알람으로 CPU 80% 초과 시 자동 알림을 받아 장애를 사전 예방했으며, 커스텀 메트릭으로 비즈니스 지표(주문 수, 결제 성공률)를 모니터링했습니다.'
+CloudWatch 알람으로 CPU 80% 초과 시 자동 알림을 받아 장애를 사전 예방했으며, 커스텀 메트릭으로 비즈니스 지표(주문 수, 결제 성공률)를 모니터링했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000008';
 
 UPDATE questions SET explanation =
-'**AWS VPC (Virtual Private Cloud)**
+$md$
+**AWS VPC (Virtual Private Cloud)**
 AWS 클라우드에서 논리적으로 격리된 가상 네트워크를 정의하는 서비스입니다.
 
 **주요 기능**
@@ -682,11 +710,14 @@ VPC 내에서 IP 주소 범위를 더 작게 나눈 네트워크 영역입니다
 ```
 
 **실무 경험**
-Multi-AZ VPC에 퍼블릭/프라이빗 서브넷을 분리하여 웹 서버는 퍼블릭, DB는 프라이빗에 배치해 보안을 강화했으며, NAT 게이트웨이로 프라이빗 인스턴스의 안전한 외부 통신을 구현했습니다.'
+Multi-AZ VPC에 퍼블릭/프라이빗 서브넷을 분리하여 웹 서버는 퍼블릭, DB는 프라이빗에 배치해 보안을 강화했으며, NAT 게이트웨이로 프라이빗 인스턴스의 안전한 외부 통신을 구현했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000009';
 
 UPDATE questions SET explanation =
-'**AWS IAM (Identity and Access Management)**
+$md$
+**AWS IAM (Identity and Access Management)**
 AWS 리소스에 대한 접근을 안전하게 제어하는 서비스로, 사용자, 그룹, 역할, 정책을 관리합니다.
 
 **주요 역할**
@@ -784,11 +815,14 @@ IAM 역할 생성 → EC2에 연결 → S3 접근 가능
 - ❌ 액세스 키를 코드에 하드코딩 금지
 
 **실무 경험**
-개발/운영 환경별로 IAM 그룹을 분리하여 권한을 관리했고, EC2 인스턴스에 IAM 역할을 부여하여 S3 접근 시 액세스 키 없이 안전하게 접근했습니다.'
+개발/운영 환경별로 IAM 그룹을 분리하여 권한을 관리했고, EC2 인스턴스에 IAM 역할을 부여하여 S3 접근 시 액세스 키 없이 안전하게 접근했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-00000000000A';
 
 UPDATE questions SET explanation =
-'**로드 밸런서와 오토 스케일링의 협력**
+$md$
+**로드 밸런서와 오토 스케일링의 협력**
 
 **Elastic Load Balancer (ELB)**
 여러 EC2 인스턴스에 트래픽을 분산하고 헬스 체크를 수행합니다.
@@ -902,11 +936,14 @@ ELB RequestCount < 300
 ```
 
 **실무 경험**
-ELB + Auto Scaling으로 평소 2대에서 피크 시간 15대로 자동 확장하여 서비스 안정성을 확보했고, 비용은 60% 절감했습니다. 헬스 체크로 장애 인스턴스를 자동 교체하여 다운타임을 최소화했습니다.'
+ELB + Auto Scaling으로 평소 2대에서 피크 시간 15대로 자동 확장하여 서비스 안정성을 확보했고, 비용은 60% 절감했습니다. 헬스 체크로 장애 인스턴스를 자동 교체하여 다운타임을 최소화했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-00000000000B';
 
 UPDATE questions SET explanation =
-'**데이터베이스 확장 방법**
+$md$
+**데이터베이스 확장 방법**
 
 **수직 확장 (Scale Up)**
 인스턴스 타입을 더 강력한 것으로 업그레이드합니다.
@@ -1026,11 +1063,14 @@ Aurora
 - 완전 관리형 수평 확장
 
 **실무 경험**
-읽기 트래픽이 80%인 서비스에서 Read Replica 3개를 추가하여 Master 부하를 75% 감소시켰고, 쓰기 성능이 한계에 도달한 서비스는 DynamoDB로 마이그레이션하여 무제한 확장을 구현했습니다.'
+읽기 트래픽이 80%인 서비스에서 Read Replica 3개를 추가하여 Master 부하를 75% 감소시켰고, 쓰기 성능이 한계에 도달한 서비스는 DynamoDB로 마이그레이션하여 무제한 확장을 구현했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-00000000000C';
 
 UPDATE questions SET explanation =
-'**CloudFormation**
+$md$
+**CloudFormation**
 AWS가 제공하는 IaC(Infrastructure as Code) 도구로, AWS 리소스를 YAML/JSON 템플릿으로 정의하고 프로비저닝합니다.
 
 **특징**
@@ -1145,11 +1185,14 @@ resource "aws_s3_bucket" "data" {
 ```
 
 **실무 경험**
-AWS 전용 프로젝트는 CloudFormation으로 인프라를 코드화했고, 멀티 클라우드 환경에서는 Terraform으로 AWS/GCP를 통합 관리하여 일관된 배포 프로세스를 구축했습니다.'
+AWS 전용 프로젝트는 CloudFormation으로 인프라를 코드화했고, 멀티 클라우드 환경에서는 Terraform으로 AWS/GCP를 통합 관리하여 일관된 배포 프로세스를 구축했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-00000000000D';
 
 UPDATE questions SET explanation =
-'**AWS 비용 최적화 방법**
+$md$
+**AWS 비용 최적화 방법**
 
 **1. 적절한 인스턴스 타입 선택**
 
@@ -1310,11 +1353,14 @@ Project: WebApp
 - [ ] 태그 전략 수립
 
 **실무 경험**
-S3 Lifecycle Policy로 오래된 데이터를 Glacier로 이동하여 월 $500 절감했고, 개발 서버를 업무 시간에만 실행하여 EC2 비용을 50% 줄였으며, Spot 인스턴스로 배치 작업 비용을 80% 절감했습니다.'
+S3 Lifecycle Policy로 오래된 데이터를 Glacier로 이동하여 월 $500 절감했고, 개발 서버를 업무 시간에만 실행하여 EC2 비용을 50% 줄였으며, Spot 인스턴스로 배치 작업 비용을 80% 절감했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-00000000000E';
 
 UPDATE questions SET explanation =
-'**AWS Well-Architected 프레임워크**
+$md$
+**AWS Well-Architected 프레임워크**
 AWS가 제공하는 클라우드 아키텍처 설계 모범 사례로, 5가지(또는 6가지) 핵심 기둥(Pillar)로 구성됩니다.
 
 **5가지 핵심 기둥**
@@ -1433,11 +1479,14 @@ AWS 콘솔에서 제공하는 무료 도구로, 아키텍처를 5가지 기둥�
 모든 AWS 아키텍처 설계 시 5가지 기둥을 기준으로 점검하여 균형 잡힌 시스템을 구축합니다.
 
 **실무 경험**
-Well-Architected Review를 통해 보안 취약점(IAM 과도한 권한)을 발견하여 최소 권한으로 개선했고, 비용 최적화를 통해 월 $1000 절감했습니다.'
+Well-Architected Review를 통해 보안 취약점(IAM 과도한 권한)을 발견하여 최소 권한으로 개선했고, 비용 최적화를 통해 월 $1000 절감했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-00000000000F';
 
 UPDATE questions SET explanation =
-'**AWS 서비스 간 통합: S3 이벤트로 Lambda 트리거**
+$md$
+**AWS 서비스 간 통합: S3 이벤트로 Lambda 트리거**
 
 **동작 원리**
 S3 버킷에 파일이 업로드되면 자동으로 Lambda 함수가 실행됩니다.
@@ -1599,11 +1648,14 @@ S3 업로드 → Lambda (검증) → SQS → Lambda (변환) → S3 저장
 - **비용 효율**: 실행 시간만 과금
 
 **실무 경험**
-사용자 프로필 이미지 업로드 시 S3 이벤트로 Lambda를 트리거하여 자동으로 3가지 크기의 썸네일을 생성했고, CSV 파일 업로드 시 Lambda로 파싱하여 DynamoDB에 자동 저장하는 파이프라인을 구축했습니다.'
+사용자 프로필 이미지 업로드 시 S3 이벤트로 Lambda를 트리거하여 자동으로 3가지 크기의 썸네일을 생성했고, CSV 파일 업로드 시 Lambda로 파싱하여 DynamoDB에 자동 저장하는 파이프라인을 구축했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000010';
 
 UPDATE questions SET explanation =
-'**다중 계정 운영 고려사항**
+$md$
+**다중 계정 운영 고려사항**
 
 **왜 다중 계정을 사용하나?**
 - 환경 격리 (개발/스테이징/프로덕션)
@@ -1817,7 +1869,9 @@ AWS Organizations
 - [ ] 자동화 (CloudFormation StackSets)
 
 **실무 경험**
-Dev/Staging/Prod 계정을 분리하여 개발 중 실수로 프로덕션 DB를 삭제하는 사고를 원천 차단했고, SCP로 특정 리전만 허용하여 의도치 않은 리전 사용을 방지했습니다.'
+Dev/Staging/Prod 계정을 분리하여 개발 중 실수로 프로덕션 DB를 삭제하는 사고를 원천 차단했고, SCP로 특정 리전만 허용하여 의도치 않은 리전 사용을 방지했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000011';
 
 -- 나머지 질문들은 글자 수 제한으로 인해 다음 파일에 계속...

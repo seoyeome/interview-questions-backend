@@ -1,7 +1,8 @@
 -- AWS 질문에 대한 답변 추가 (Part 2: 19-25번)
 
 UPDATE questions SET explanation =
-'**클라우드 보안 강화 조치**
+$md$
+**클라우드 보안 강화 조치**
 
 **1. IAM 보안**
 
@@ -179,11 +180,14 @@ UPDATE questions SET explanation =
 - [ ] Security Hub 검토
 
 **실무 경험**
-GuardDuty로 비정상적인 API 호출을 탐지하여 침해 시도를 조기 차단했고, S3 버킷 암호화와 버킷 정책으로 데이터 유출을 방지했으며, CloudTrail 로그 분석으로 보안 감사를 수행했습니다.'
+GuardDuty로 비정상적인 API 호출을 탐지하여 침해 시도를 조기 차단했고, S3 버킷 암호화와 버킷 정책으로 데이터 유출을 방지했으며, CloudTrail 로그 분석으로 보안 감사를 수행했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000012';
 
 UPDATE questions SET explanation =
-'**멀티 리전 (Multi-Region) 배포**
+$md$
+**멀티 리전 (Multi-Region) 배포**
 
 **이점**
 
@@ -379,11 +383,14 @@ Route 53 가중치 라우팅
 - [ ] 장애 전환 테스트
 
 **실무 경험**
-서울/도쿄/버지니아 3개 리전에 Active-Active로 배포하여 글로벌 사용자 응답 속도를 평균 300ms에서 50ms로 개선했고, Aurora Global Database로 1초 미만 복제 지연을 달성했습니다.'
+서울/도쿄/버지니아 3개 리전에 Active-Active로 배포하여 글로벌 사용자 응답 속도를 평균 300ms에서 50ms로 개선했고, Aurora Global Database로 1초 미만 복제 지연을 달성했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000013';
 
 UPDATE questions SET explanation =
-'**AWS 공동 책임 모델 (Shared Responsibility Model)**
+$md$
+**AWS 공동 책임 모델 (Shared Responsibility Model)**
 
 AWS와 고객이 보안 책임을 나누어 가지는 모델입니다.
 
@@ -558,11 +565,14 @@ AWS가 관리하는 인프라 및 서비스의 보안입니다.
 - AWS 책임: 하이퍼바이저 격리
 
 **실무 경험**
-공동 책임 모델을 이해하여 S3 버킷 암호화와 버킷 정책을 직접 설정했고, EC2 보안 그룹을 최소 권한으로 구성하여 보안을 강화했습니다.'
+공동 책임 모델을 이해하여 S3 버킷 암호화와 버킷 정책을 직접 설정했고, EC2 보안 그룹을 최소 권한으로 구성하여 보안을 강화했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000014';
 
 UPDATE questions SET explanation =
-'**확장성 있고 내결함성 있는 웹 애플리케이션 설계**
+$md$
+**확장성 있고 내결함성 있는 웹 애플리케이션 설계**
 
 **아키텍처 설계**
 
@@ -768,11 +778,14 @@ CodePipeline
 - ✓ 암호화 (HTTPS, RDS, S3)
 
 **실무 경험**
-이 아키텍처로 일 100만 사용자를 처리했으며, AZ 장애 발생 시에도 서비스 중단 없이 운영했고, Auto Scaling으로 트래픽 10배 증가에도 안정적으로 대응했습니다.'
+이 아키텍처로 일 100만 사용자를 처리했으며, AZ 장애 발생 시에도 서비스 중단 없이 운영했고, Auto Scaling으로 트래픽 10배 증가에도 안정적으로 대응했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000015';
 
 UPDATE questions SET explanation =
-'**시나리오: 사용자 갑자기 급증 상황 대응**
+$md$
+**시나리오: 사용자 갑자기 급증 상황 대응**
 
 예: 뉴스 포털에 긴급 뉴스로 평소 1000명에서 10만 명으로 급증
 
@@ -1007,11 +1020,14 @@ aws autoscaling set-desired-capacity \
 - [x] 정기 부하 테스트
 
 **실무 경험**
-블랙 프라이데이 세일에서 평소 대비 50배 트래픽 급증 시 Auto Scaling + CloudFront + ElastiCache 조합으로 서비스 중단 없이 운영했고, 응답 시간을 50ms로 유지했습니다.'
+블랙 프라이데이 세일에서 평소 대비 50배 트래픽 급증 시 Auto Scaling + CloudFront + ElastiCache 조합으로 서비스 중단 없이 운영했고, 응답 시간을 50ms로 유지했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000016';
 
 UPDATE questions SET explanation =
-'**RDS 대신 DynamoDB 선택 시나리오**
+$md$
+**RDS 대신 DynamoDB 선택 시나리오**
 
 **DynamoDB를 선택해야 하는 경우**
 
@@ -1235,11 +1251,14 @@ SELECT department, AVG(salary) FROM employees GROUP BY department;
 - 선택: RDS
 
 **실무 경험**
-채팅 앱의 메시지 저장은 DynamoDB로 구현하여 초당 10만 건의 메시지를 처리했고, 주문 시스템은 RDS로 구현하여 복잡한 재고 관리와 트랜잭션을 안전하게 처리했습니다.'
+채팅 앱의 메시지 저장은 DynamoDB로 구현하여 초당 10만 건의 메시지를 처리했고, 주문 시스템은 RDS로 구현하여 복잡한 재고 관리와 트랜잭션을 안전하게 처리했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000017';
 
 UPDATE questions SET explanation =
-'**Lambda를 활용해야 하는 애플리케이션 시나리오**
+$md$
+**Lambda를 활용해야 하는 애플리케이션 시나리오**
 
 **1. 이벤트 기반 파일 처리**
 
@@ -1506,5 +1525,7 @@ EC2 (t3.small):
 ---
 
 **실무 경험**
-사용자 프로필 이미지 업로드 시 Lambda로 3가지 크기 썸네일을 자동 생성하여 EC2 서버 부하를 완전히 제거했고, 야간 배치 작업을 Lambda + CloudWatch Events로 대체하여 월 $50 비용을 $0.1로 절감했습니다.'
+사용자 프로필 이미지 업로드 시 Lambda로 3가지 크기 썸네일을 자동 생성하여 EC2 서버 부하를 완전히 제거했고, 야간 배치 작업을 Lambda + CloudWatch Events로 대체하여 월 $50 비용을 $0.1로 절감했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0015-000000000018';

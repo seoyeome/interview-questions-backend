@@ -3,7 +3,8 @@
 
 -- Question 12 (0x0C): 노드가 다운되었을 때 쿠버네티스의 동작은?
 UPDATE questions SET explanation =
-'**노드 장애 시 Kubernetes 동작**
+$md$
+**노드 장애 시 Kubernetes 동작**
 
 **감지 과정**
 1. kubelet이 40초간 응답 없음
@@ -32,12 +33,15 @@ T+5분:  다른 노드에 Pod 재생성
 ```
 
 **실무 경험**
-프로덕션에서 노드 1대가 갑자기 다운되었을 때 5분 내에 모든 Pod가 다른 노드로 자동 이전되어 서비스 중단 없이 복구되었습니다.'
+프로덕션에서 노드 1대가 갑자기 다운되었을 때 5분 내에 모든 Pod가 다른 노드로 자동 이전되어 서비스 중단 없이 복구되었습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0014-00000000000C';
 
 -- Question 13 (0x0D): Horizontal Pod Autoscaler(HPA)는 어떻게 작동하나요?
 UPDATE questions SET explanation =
-'**HPA (Horizontal Pod Autoscaler)**
+$md$
+**HPA (Horizontal Pod Autoscaler)**
 
 CPU/메모리 사용률에 따라 Pod 개수를 자동으로 조정합니다.
 
@@ -87,12 +91,15 @@ kubectl get hpa
 ```
 
 **실무 경험**
-트래픽이 급증하는 이벤트 기간 동안 HPA로 Pod를 자동으로 10개까지 늘려 안정적으로 서비스했고, 이벤트 종료 후 자동으로 2개로 축소하여 비용을 절감했습니다.'
+트래픽이 급증하는 이벤트 기간 동안 HPA로 Pod를 자동으로 10개까지 늘려 안정적으로 서비스했고, 이벤트 종료 후 자동으로 2개로 축소하여 비용을 절감했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0014-00000000000D';
 
 -- Question 14 (0x0E): 컨테이너 자원 제한은 Kubernetes에서 어떻게 설정하나요?
 UPDATE questions SET explanation =
-'**컨테이너 리소스 제한**
+$md$
+**컨테이너 리소스 제한**
 
 **Requests vs Limits**
 
@@ -150,12 +157,15 @@ spec:
 ```
 
 **실무 경험**
-프로덕션에서 모든 Pod에 리소스 제한을 설정하여 한 Pod가 노드 전체 리소스를 독점하는 것을 방지하고, LimitRange로 기본값을 설정하여 실수로 리소스를 무제한 사용하는 일이 없도록 했습니다.'
+프로덕션에서 모든 Pod에 리소스 제한을 설정하여 한 Pod가 노드 전체 리소스를 독점하는 것을 방지하고, LimitRange로 기본값을 설정하여 실수로 리소스를 무제한 사용하는 일이 없도록 했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0014-00000000000E';
 
 -- Question 15 (0x0F): 마이크로서비스 아키텍처에서 Kubernetes를 활용할 때 얻는 이점은?
 UPDATE questions SET explanation =
-'**마이크로서비스 + Kubernetes 이점**
+$md$
+**마이크로서비스 + Kubernetes 이점**
 
 **1. 독립적인 배포**
 - 각 서비스를 독립적으로 배포/업데이트
@@ -193,12 +203,15 @@ Ingress (외부 진입점)
 ```
 
 **실무 경험**
-20개 마이크로서비스를 Kubernetes로 운영하며 각 서비스를 독립적으로 배포하고, HPA로 트래픽에 따라 자동 스케일링하여 리소스 사용률을 최적화했습니다.'
+20개 마이크로서비스를 Kubernetes로 운영하며 각 서비스를 독립적으로 배포하고, HPA로 트래픽에 따라 자동 스케일링하여 리소스 사용률을 최적화했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0014-00000000000F';
 
 -- Question 16 (0x10): DaemonSet은 어떤 경우에 활용되는지 설명해 주세요.
 UPDATE questions SET explanation =
-'**DaemonSet**
+$md$
+**DaemonSet**
 
 모든 노드(또는 특정 노드)에 Pod를 정확히 1개씩 실행하는 리소스입니다.
 
@@ -262,12 +275,15 @@ spec:
 | **용도** | 애플리케이션 | 인프라 서비스 |
 
 **실무 경험**
-모든 노드에 Fluentd DaemonSet을 배포하여 각 노드의 로그를 자동으로 수집하고 Elasticsearch로 전송하여 중앙 집중식 로그 관리를 구현했습니다.'
+모든 노드에 Fluentd DaemonSet을 배포하여 각 노드의 로그를 자동으로 수집하고 Elasticsearch로 전송하여 중앙 집중식 로그 관리를 구현했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0014-000000000010';
 
 -- Question 17 (0x11): Job과 CronJob은 각각 어떤 용도로 쓰이나요?
 UPDATE questions SET explanation =
-'**Job과 CronJob**
+$md$
+**Job과 CronJob**
 
 **Job**
 - 일회성 작업 실행 (배치 작업)
@@ -339,12 +355,15 @@ spec:
 | DB 초기화 | 로그 정리 (매월) |
 
 **실무 경험**
-CronJob으로 매일 새벽 2시에 데이터베이스 백업을 S3에 자동 업로드하고, Job으로 대량의 데이터 마이그레이션 작업을 안전하게 실행했습니다.'
+CronJob으로 매일 새벽 2시에 데이터베이스 백업을 S3에 자동 업로드하고, Job으로 대량의 데이터 마이그레이션 작업을 안전하게 실행했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0014-000000000011';
 
 -- Question 18 (0x12): 쿠버네티스에서 Service란 무엇이며, 왜 필요한가요?
 UPDATE questions SET explanation =
-'**Kubernetes Service**
+$md$
+**Kubernetes Service**
 
 Pod에 접근하기 위한 안정적인 네트워크 엔드포인트를 제공합니다.
 
@@ -391,12 +410,15 @@ Service (고정 IP: 10.96.0.1)
 - 다른 네임스페이스: `web-service.production.svc.cluster.local`
 
 **실무 경험**
-마이크로서비스 아키텍처에서 각 서비스를 Service로 노출하여 다른 서비스들이 고정된 DNS 이름으로 접근하도록 했고, Pod가 수십 번 재시작되어도 서비스 간 통신에 문제가 없었습니다.'
+마이크로서비스 아키텍처에서 각 서비스를 Service로 노출하여 다른 서비스들이 고정된 DNS 이름으로 접근하도록 했고, Pod가 수십 번 재시작되어도 서비스 간 통신에 문제가 없었습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0014-000000000012';
 
 -- Question 19 (0x13): ClusterIP, NodePort, LoadBalancer 서비스의 차이는?
 UPDATE questions SET explanation =
-'**Service 타입 비교**
+$md$
+**Service 타입 비교**
 
 **ClusterIP (기본값)**
 - 클러스터 내부에서만 접근 가능
@@ -443,12 +465,15 @@ type: LoadBalancer
 | **LoadBalancer** | ✅ (외부 IP) | 프로덕션 외부 서비스 |
 
 **실무 경험**
-프로덕션에서는 대부분의 서비스를 ClusterIP로 구성하고, Ingress Controller 1개만 LoadBalancer로 외부에 노출하여 비용을 절감하면서도 모든 서비스에 외부 접근을 제공했습니다.'
+프로덕션에서는 대부분의 서비스를 ClusterIP로 구성하고, Ingress Controller 1개만 LoadBalancer로 외부에 노출하여 비용을 절감하면서도 모든 서비스에 외부 접근을 제공했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0014-000000000013';
 
 -- Question 20 (0x14): Ingress는 무엇이며, 어떻게 외부 트래픽을 처리하나요?
 UPDATE questions SET explanation =
-'**Ingress**
+$md$
+**Ingress**
 
 HTTP/HTTPS 트래픽을 클러스터 내부 서비스로 라우팅하는 규칙입니다.
 
@@ -517,12 +542,15 @@ spec:
 - HAProxy
 
 **실무 경험**
-NGINX Ingress Controller로 20개 마이크로서비스를 단일 진입점으로 관리하고, Let's Encrypt로 TLS 인증서를 자동 갱신하여 모든 서비스에 HTTPS를 적용했습니다.'
+NGINX Ingress Controller로 20개 마이크로서비스를 단일 진입점으로 관리하고, Let's Encrypt로 TLS 인증서를 자동 갱신하여 모든 서비스에 HTTPS를 적용했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0014-000000000014';
 
 -- Question 21 (0x15): 쿠버네티스의 etcd는 어떤 역할을 하나요?
 UPDATE questions SET explanation =
-'**etcd**
+$md$
+**etcd**
 
 Kubernetes 클러스터의 모든 상태를 저장하는 분산 키-값 저장소입니다.
 
@@ -566,12 +594,15 @@ etcdctl snapshot save backup.db
 ```
 
 **실무 경험**
-프로덕션에서 etcd를 5노드 클러스터로 구성하여 최대 2개 노드 장애까지 허용하도록 했고, 매일 자동으로 스냅샷을 S3에 백업하여 장애 시 복구 가능하도록 준비했습니다.'
+프로덕션에서 etcd를 5노드 클러스터로 구성하여 최대 2개 노드 장애까지 허용하도록 했고, 매일 자동으로 스냅샷을 S3에 백업하여 장애 시 복구 가능하도록 준비했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0014-000000000015';
 
 -- Question 22 (0x16): Control Plane 구성 요소에는 무엇이 있나요?
 UPDATE questions SET explanation =
-'**Control Plane (Master Node) 구성 요소**
+$md$
+**Control Plane (Master Node) 구성 요소**
 
 **4가지 핵심 컴포넌트**
 
@@ -621,5 +652,7 @@ Master1, Master2, Master3:
 ```
 
 **실무 경험**
-프로덕션에서 Control Plane을 3개 노드로 구성하여 1개 노드 장애 시에도 정상 운영이 가능하도록 했고, HAProxy로 kube-apiserver 3개로 트래픽을 분산시켜 부하를 분산했습니다.'
+프로덕션에서 Control Plane을 3개 노드로 구성하여 1개 노드 장애 시에도 정상 운영이 가능하도록 했고, HAProxy로 kube-apiserver 3개로 트래픽을 분산시켜 부하를 분산했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0014-000000000016';

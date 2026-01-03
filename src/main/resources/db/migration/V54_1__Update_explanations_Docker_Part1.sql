@@ -2,7 +2,8 @@
 
 -- Question 0: Docker란 무엇이며 어떤 문제를 해결하기 위해 등장했나요?
 UPDATE questions SET explanation =
-'**Docker란?**
+$md$
+**Docker란?**
 
 애플리케이션을 컨테이너로 패키징하여 어디서나 일관되게 실행할 수 있게 해주는 플랫폼입니다.
 
@@ -125,13 +126,16 @@ docker run -p 8080:8080 myapp:1.0
 | 성능 | 거의 네이티브 | 오버헤드 있음 |
 
 **실무 경험**
-이전 회사에서 수동 배포 시 환경 차이로 인한 버그가 자주 발생했습니다. Docker 도입 후 모든 환경(개발, 스테이징, 프로덕션)이 동일한 컨테이너로 실행되어 "내 컴퓨터에서는 되는데" 문제가 사라졌고, 배포 시간이 1시간에서 5분으로 단축되었습니다.'
+이전 회사에서 수동 배포 시 환경 차이로 인한 버그가 자주 발생했습니다. Docker 도입 후 모든 환경(개발, 스테이징, 프로덕션)이 동일한 컨테이너로 실행되어 "내 컴퓨터에서는 되는데" 문제가 사라졌고, 배포 시간이 1시간에서 5분으로 단축되었습니다.
+$md$
+
 
 WHERE id = 'b0000000-0000-0000-0013-000000000000';
 
 -- Question 1: 컨테이너와 가상 머신의 차이는 무엇인가요?
 UPDATE questions SET explanation =
-'**컨테이너 vs 가상 머신 (VM) 비교**
+$md$
+**컨테이너 vs 가상 머신 (VM) 비교**
 
 **아키텍처 차이**
 
@@ -335,13 +339,16 @@ nginx: 5MB (실제 사용량)
 ```
 
 **실무 경험**
-클라우드 비용 절감을 위해 VM에서 Container로 전환했습니다. 기존 10개 VM (각 2GB)을 Docker로 전환하여 전체 메모리 사용량을 20GB에서 4GB로 줄였고, 월 클라우드 비용이 $500에서 $100로 80% 절감되었습니다. 또한 배포 시간이 5분에서 30초로 단축되어 개발 속도도 크게 향상되었습니다.'
+클라우드 비용 절감을 위해 VM에서 Container로 전환했습니다. 기존 10개 VM (각 2GB)을 Docker로 전환하여 전체 메모리 사용량을 20GB에서 4GB로 줄였고, 월 클라우드 비용이 $500에서 $100로 80% 절감되었습니다. 또한 배포 시간이 5분에서 30초로 단축되어 개발 속도도 크게 향상되었습니다.
+$md$
+
 
 WHERE id = 'b0000000-0000-0000-0013-000000000001';
 
 -- Question 2: Docker 이미지와 컨테이너의 차이는?
 UPDATE questions SET explanation =
-'**Docker 이미지 vs 컨테이너**
+$md$
+**Docker 이미지 vs 컨테이너**
 
 **핵심 개념**
 
@@ -574,13 +581,16 @@ docker run -d --name app3 myapp:1.0
 | 개수 | 1개 | N개 (같은 이미지로) |
 
 **실무 경험**
-마이크로서비스 프로젝트에서 각 서비스마다 Docker 이미지를 빌드하여 Docker Hub에 저장했습니다. 프로덕션에서는 같은 이미지로 로드 밸런서 뒤에 10개 컨테이너를 실행하여 트래픽을 분산 처리했고, 트래픽 증가 시 컨테이너를 추가하는 것만으로 쉽게 확장할 수 있었습니다.'
+마이크로서비스 프로젝트에서 각 서비스마다 Docker 이미지를 빌드하여 Docker Hub에 저장했습니다. 프로덕션에서는 같은 이미지로 로드 밸런서 뒤에 10개 컨테이너를 실행하여 트래픽을 분산 처리했고, 트래픽 증가 시 컨테이너를 추가하는 것만으로 쉽게 확장할 수 있었습니다.
+$md$
+
 
 WHERE id = 'b0000000-0000-0000-0013-000000000002';
 
 -- Question 3: Dockerfile이란 무엇인가요?
 UPDATE questions SET explanation =
-'**Dockerfile이란?**
+$md$
+**Dockerfile이란?**
 
 Docker 이미지를 빌드하기 위한 명령어들을 담은 텍스트 파일입니다. "이미지 빌드 스크립트"라고 생각하면 됩니다.
 
@@ -841,13 +851,16 @@ CMD ["node", "server.js"]  # 최적화된 실행
 ```
 
 **실무 경험**
-Spring Boot 프로젝트에서 멀티 스테이지 빌드를 사용하여 이미지 크기를 800MB에서 250MB로 줄였습니다. 빌드 스테이지에서는 Gradle과 JDK를 사용하여 JAR를 빌드하고, 실행 스테이지에서는 JRE만 포함하여 불필요한 도구를 제외했습니다. 또한 레이어 캐싱을 활용하여 의존성이 변경되지 않은 경우 빌드 시간을 5분에서 30초로 단축했습니다.'
+Spring Boot 프로젝트에서 멀티 스테이지 빌드를 사용하여 이미지 크기를 800MB에서 250MB로 줄였습니다. 빌드 스테이지에서는 Gradle과 JDK를 사용하여 JAR를 빌드하고, 실행 스테이지에서는 JRE만 포함하여 불필요한 도구를 제외했습니다. 또한 레이어 캐싱을 활용하여 의존성이 변경되지 않은 경우 빌드 시간을 5분에서 30초로 단축했습니다.
+$md$
+
 
 WHERE id = 'b0000000-0000-0000-0013-000000000003';
 
 -- Question 4: Docker Hub는 어떤 서비스인가요?
 UPDATE questions SET explanation =
-'**Docker Hub란?**
+$md$
+**Docker Hub란?**
 
 Docker 이미지를 저장하고 공유할 수 있는 클라우드 기반 레지스트리 서비스입니다. "Docker의 GitHub"라고 생각하면 됩니다.
 
@@ -933,13 +946,16 @@ myteam/backend
 - Harbor (Self-hosted)
 
 **실무 경험**
-Docker Hub를 사용하여 마이크로서비스 이미지들을 저장하고 있습니다. GitHub Actions에서 코드 푸시 시 자동으로 이미지를 빌드하여 Docker Hub에 올리고, Kubernetes 클러스터가 이를 자동으로 배포합니다.'
+Docker Hub를 사용하여 마이크로서비스 이미지들을 저장하고 있습니다. GitHub Actions에서 코드 푸시 시 자동으로 이미지를 빌드하여 Docker Hub에 올리고, Kubernetes 클러스터가 이를 자동으로 배포합니다.
+$md$
+
 
 WHERE id = 'b0000000-0000-0000-0013-000000000004';
 
 -- Question 5: docker run 명령어의 주요 옵션은?
 UPDATE questions SET explanation =
-'**docker run 주요 옵션**
+$md$
+**docker run 주요 옵션**
 
 **기본 형식**
 ```bash
@@ -1124,13 +1140,16 @@ docker run -d \
 ```
 
 **실무 경험**
-프로덕션 환경에서는 항상 -d, --name, --restart always를 조합하여 사용합니다. 볼륨 마운트로 데이터 영속성을 보장하고, 환경 변수로 설정을 분리하여 같은 이미지를 여러 환경에서 사용할 수 있도록 구성했습니다.'
+프로덕션 환경에서는 항상 -d, --name, --restart always를 조합하여 사용합니다. 볼륨 마운트로 데이터 영속성을 보장하고, 환경 변수로 설정을 분리하여 같은 이미지를 여러 환경에서 사용할 수 있도록 구성했습니다.
+$md$
+
 
 WHERE id = 'b0000000-0000-0000-0013-000000000005';
 
 -- Question 6: 이미지 빌드 시 최적화 사항은?
 UPDATE questions SET explanation =
-'**Docker 이미지 빌드 최적화**
+$md$
+**Docker 이미지 빌드 최적화**
 
 **1. 베이스 이미지 선택**
 
@@ -1351,13 +1370,16 @@ DOCKER_BUILDKIT=1 docker build -t myapp .
 ```
 
 **실무 경험**
-Node.js 프로젝트에서 멀티 스테이지 빌드를 도입하여 이미지 크기를 1.2GB에서 150MB로 줄였습니다. Alpine 베이스 이미지와 .dockerignore를 활용하여 불필요한 파일을 제외했고, 의존성 캐싱으로 빌드 시간을 5분에서 30초로 단축했습니다. 이를 통해 Docker Hub 전송 시간과 배포 시간이 크게 개선되었습니다.'
+Node.js 프로젝트에서 멀티 스테이지 빌드를 도입하여 이미지 크기를 1.2GB에서 150MB로 줄였습니다. Alpine 베이스 이미지와 .dockerignore를 활용하여 불필요한 파일을 제외했고, 의존성 캐싱으로 빌드 시간을 5분에서 30초로 단축했습니다. 이를 통해 Docker Hub 전송 시간과 배포 시간이 크게 개선되었습니다.
+$md$
+
 
 WHERE id = 'b0000000-0000-0000-0013-000000000006';
 
 -- Question 7: 도커 컴포즈는 무엇이고 언제 사용하나요?
 UPDATE questions SET explanation =
-'**Docker Compose란?**
+$md$
+**Docker Compose란?**
 
 여러 컨테이너를 정의하고 실행하는 도구입니다. YAML 파일로 다중 컨테이너 애플리케이션을 설정하고 한 번에 관리할 수 있습니다.
 
@@ -1651,13 +1673,16 @@ docker-compose up -d --scale backend=3
 - ECS, GKE (클라우드 관리형)
 
 **실무 경험**
-로컬 개발 환경을 Docker Compose로 구성하여 팀 전체가 동일한 환경에서 작업할 수 있게 했습니다. 신규 팀원이 "docker-compose up" 한 번으로 전체 스택(DB, 캐시, API, 프론트엔드)을 실행할 수 있어 온보딩 시간이 하루에서 10분으로 단축되었습니다.'
+로컬 개발 환경을 Docker Compose로 구성하여 팀 전체가 동일한 환경에서 작업할 수 있게 했습니다. 신규 팀원이 "docker-compose up" 한 번으로 전체 스택(DB, 캐시, API, 프론트엔드)을 실행할 수 있어 온보딩 시간이 하루에서 10분으로 단축되었습니다.
+$md$
+
 
 WHERE id = 'b0000000-0000-0000-0013-000000000007';
 
 -- Question 8: 여러 개의 컨테이너를 오케스트레이션하기 위해 어떤 도구를 사용해봤나요?
 UPDATE questions SET explanation =
-'**컨테이너 오케스트레이션 도구 사용 경험**
+$md$
+**컨테이너 오케스트레이션 도구 사용 경험**
 
 **주요 도구**
 
@@ -1763,13 +1788,16 @@ docker service scale web=5
 5. 자동화된 복구 및 스케일링
 
 **실무 경험**
-프로덕션에서 Kubernetes를 사용하여 20개 마이크로서비스를 오케스트레이션하고 있습니다. HPA로 트래픽에 따라 자동 스케일링하며, 롤링 업데이트로 무중단 배포를 구현했습니다. 로컬 개발은 Docker Compose를 사용하여 간편하게 관리하고 있습니다.'
+프로덕션에서 Kubernetes를 사용하여 20개 마이크로서비스를 오케스트레이션하고 있습니다. HPA로 트래픽에 따라 자동 스케일링하며, 롤링 업데이트로 무중단 배포를 구현했습니다. 로컬 개발은 Docker Compose를 사용하여 간편하게 관리하고 있습니다.
+$md$
+
 
 WHERE id = 'b0000000-0000-0000-0013-000000000008';
 
 -- Question 9: 도커에서 볼륨은 무엇이며 왜 필요한가요?
 UPDATE questions SET explanation =
-'**Docker 볼륨 (Volume)이란?**
+$md$
+**Docker 볼륨 (Volume)이란?**
 
 컨테이너가 삭제되어도 데이터를 보존하기 위한 영속적 저장소입니다.
 
@@ -1926,13 +1954,16 @@ docker run --rm -v pgdata:/data -v $(pwd):/backup ubuntu tar xzf /backup/pgdata.
 ```
 
 **실무 경험**
-프로덕션 데이터베이스를 Docker로 실행하며 볼륨으로 데이터를 영속화하고 있습니다. 매일 밤 자동으로 볼륨을 백업하여 S3에 저장하고, 컨테이너 업데이트 시에도 데이터 손실 없이 안전하게 진행할 수 있습니다.'
+프로덕션 데이터베이스를 Docker로 실행하며 볼륨으로 데이터를 영속화하고 있습니다. 매일 밤 자동으로 볼륨을 백업하여 S3에 저장하고, 컨테이너 업데이트 시에도 데이터 손실 없이 안전하게 진행할 수 있습니다.
+$md$
+
 
 WHERE id = 'b0000000-0000-0000-0013-000000000009';
 
 -- Question 10 (0xA): Docker에서 네트워킹은 어떻게 구성되나요?
 UPDATE questions SET explanation =
-'**Docker 네트워킹**
+$md$
+**Docker 네트워킹**
 
 **기본 네트워크 드라이버**
 
@@ -2170,13 +2201,16 @@ docker run -d \
 ```
 
 **실무 경험**
-마이크로서비스 환경에서 서비스별로 네트워크를 분리하여 보안을 강화했습니다. API Gateway만 외부에 노출하고, 내부 서비스들은 private 네트워크로 격리하여 직접 접근을 차단했습니다. Docker의 내장 DNS로 서비스 이름으로 통신하여 IP 관리 부담을 줄였습니다.'
+마이크로서비스 환경에서 서비스별로 네트워크를 분리하여 보안을 강화했습니다. API Gateway만 외부에 노출하고, 내부 서비스들은 private 네트워크로 격리하여 직접 접근을 차단했습니다. Docker의 내장 DNS로 서비스 이름으로 통신하여 IP 관리 부담을 줄였습니다.
+$md$
+
 
 WHERE id = 'b0000000-0000-0000-0013-00000000000A';
 
 -- Question 11 (0xB): 이미지 최적화를 위해 고려해야 할 사항은?
 UPDATE questions SET explanation =
-'**Docker 이미지 최적화 전략**
+$md$
+**Docker 이미지 최적화 전략**
 
 **(이미 Question 6에서 상세히 다룸)**
 
@@ -2226,13 +2260,16 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 ```
 
-자세한 내용은 Question 6 참조.'
+자세한 내용은 Question 6 참조.
+$md$
+
 
 WHERE id = 'b0000000-0000-0000-0013-00000000000B';
 
 -- Question 12 (0xC): Docker 컨테이너 상태를 보는 명령은?
 UPDATE questions SET explanation =
-'**Docker 컨테이너 상태 확인**
+$md$
+**Docker 컨테이너 상태 확인**
 
 **주요 명령어**
 
@@ -2368,13 +2405,16 @@ docker ps
 ```
 
 **실무 경험**
-프로덕션에서 docker stats로 실시간 리소스를 모니터링하고, Prometheus와 Grafana로 시각화하여 이상 징후를 빠르게 파악합니다. 컨테이너가 Exited 상태가 되면 즉시 로그를 확인하여 원인을 분석하고 재시작 정책을 조정합니다.'
+프로덕션에서 docker stats로 실시간 리소스를 모니터링하고, Prometheus와 Grafana로 시각화하여 이상 징후를 빠르게 파악합니다. 컨테이너가 Exited 상태가 되면 즉시 로그를 확인하여 원인을 분석하고 재시작 정책을 조정합니다.
+$md$
+
 
 WHERE id = 'b0000000-0000-0000-0013-00000000000C';
 
 -- Question 13 (0xD): docker ps와 docker images 명령의 차이는?
 UPDATE questions SET explanation =
-'**docker ps vs docker images 비교**
+$md$
+**docker ps vs docker images 비교**
 
 **핵심 차이**
 
@@ -2522,6 +2562,8 @@ docker images --format "{{.Repository}}:{{.Tag}}\t{{.Size}}" | sort -k2 -hr
 ```
 
 **실무 경험**
-개발 중 docker images로 불필요한 이미지를 주기적으로 정리하여 디스크 공간을 확보합니다. docker ps -a로 Exited 상태의 컨테이너들을 찾아 삭제하고, docker system prune으로 전체 정리를 자동화하여 매주 실행합니다.'
+개발 중 docker images로 불필요한 이미지를 주기적으로 정리하여 디스크 공간을 확보합니다. docker ps -a로 Exited 상태의 컨테이너들을 찾아 삭제하고, docker system prune으로 전체 정리를 자동화하여 매주 실행합니다.
+$md$
+
 
 WHERE id = 'b0000000-0000-0000-0013-00000000000D';

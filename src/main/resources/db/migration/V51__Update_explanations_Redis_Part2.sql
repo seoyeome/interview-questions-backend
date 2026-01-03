@@ -1,7 +1,8 @@
 -- Redis 질문에 대한 답변 추가 (Part 2: 15-27번)
 
 UPDATE questions SET explanation =
-'**Pub/Sub (발행/구독)**
+$md$
+**Pub/Sub (발행/구독)**
 
 Redis의 메시징 시스템으로 실시간 이벤트 전파에 사용됩니다.
 
@@ -46,11 +47,14 @@ PSUBSCRIBE user:*  # user:로 시작하는 모든 채널
 Redis 5.0+ Stream은 메시지 저장 + Consumer Group 지원
 
 **실무**
-마이크로서비스 간 실시간 이벤트 전파에 Pub/Sub을 사용하여 주문 완료 시 재고/배송 서비스에 즉시 알림을 보냈습니다.'
+마이크로서비스 간 실시간 이벤트 전파에 Pub/Sub을 사용하여 주문 완료 시 재고/배송 서비스에 즉시 알림을 보냈습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0011-000000000015';
 
 UPDATE questions SET explanation =
-'**Lua 스크립팅**
+$md$
+**Lua 스크립팅**
 
 Redis에서 여러 명령을 원자적으로 실행하는 스크립트 기능입니다.
 
@@ -114,11 +118,14 @@ result = redis.evalsha(sha, 1, "product:123:stock")
 - 단순한 경우 MULTI/EXEC 사용
 
 **실무**
-재고 차감 로직을 Lua 스크립트로 구현하여 동시 주문 시에도 재고 음수 방지했습니다.'
+재고 차감 로직을 Lua 스크립트로 구현하여 동시 주문 시에도 재고 음수 방지했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0011-000000000016';
 
 UPDATE questions SET explanation =
-'**Redis vs Memcached**
+$md$
+**Redis vs Memcached**
 
 둘 다 인메모리 캐시이지만 기능과 사용 사례가 다릅니다.
 
@@ -157,11 +164,14 @@ UPDATE questions SET explanation =
 - **Memcached**: 단순 캐시만, 최대 성능
 
 **실무**
-대부분의 경우 Redis를 선택합니다. Memcached는 순수 캐시 용도로만 사용되며, Redis의 풍부한 기능이 더 유용합니다.'
+대부분의 경우 Redis를 선택합니다. Memcached는 순수 캐시 용도로만 사용되며, Redis의 풍부한 기능이 더 유용합니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0011-000000000017';
 
 UPDATE questions SET explanation =
-'**Redis를 세션 저장소로 사용**
+$md$
+**Redis를 세션 저장소로 사용**
 
 웹 애플리케이션의 세션 데이터를 Redis에 저장하는 방식입니다.
 
@@ -239,11 +249,14 @@ EXPIRE session:abc123 1800
 - JWT: 클라이언트 저장, 만료 전 무효화 어려움
 
 **실무**
-멀티 서버 환경에서 Redis 세션을 도입하여 사용자가 어느 서버에 접속해도 로그인 상태를 유지하도록 했습니다.'
+멀티 서버 환경에서 Redis 세션을 도입하여 사용자가 어느 서버에 접속해도 로그인 상태를 유지하도록 했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0011-000000000018';
 
 UPDATE questions SET explanation =
-'**Redis 보안**
+$md$
+**Redis 보안**
 
 **1. 비밀번호 인증 (AUTH)**
 
@@ -322,11 +335,14 @@ protected-mode yes  # 로컬만 접속 가능
 - ✅ 정기적 보안 패치
 
 **실무**
-프로덕션 환경에서는 Redis를 VPC 내부 네트워크에만 노출하고, ACL로 애플리케이션별 사용자를 분리하여 보안을 강화했습니다.'
+프로덕션 환경에서는 Redis를 VPC 내부 네트워크에만 노출하고, ACL로 애플리케이션별 사용자를 분리하여 보안을 강화했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0011-000000000019';
 
 UPDATE questions SET explanation =
-'**메모리 사용량 최적화**
+$md$
+**메모리 사용량 최적화**
 
 **1. maxmemory 설정**
 
@@ -399,11 +415,14 @@ redis-cli --scan --pattern "temp:*" | xargs redis-cli DEL
 - 긴 키 이름 피하기: `user:1000:profile` → `u:1000:p`
 
 **실무**
-메모리 사용량이 80% 초과 시 알림을 설정하고, 주기적으로 bigkeys 분석으로 비효율적인 키를 찾아 최적화했습니다.'
+메모리 사용량이 80% 초과 시 알림을 설정하고, 주기적으로 bigkeys 분석으로 비효율적인 키를 찾아 최적화했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0011-000000000020';
 
 UPDATE questions SET explanation =
-'**데이터 일관성 주의사항**
+$md$
+**데이터 일관성 주의사항**
 
 **1. 복제 지연 (Replication Lag)**
 
@@ -499,11 +518,14 @@ redis.mget("user:{1000}", "product:{1000}")
 - 모니터링: Replication Lag 확인
 
 **실무**
-주문 완료 후 재고 캐시를 즉시 무효화하여 최신 재고 정보를 보장했습니다. Slave 복제 지연으로 인한 문제를 방지하기 위해 재고 조회는 Master에서만 수행했습니다.'
+주문 완료 후 재고 캐시를 즉시 무효화하여 최신 재고 정보를 보장했습니다. Slave 복제 지연으로 인한 문제를 방지하기 위해 재고 조회는 Master에서만 수행했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0011-000000000021';
 
 UPDATE questions SET explanation =
-'**싱글 스레드의 성능 영향**
+$md$
+**싱글 스레드의 성능 영향**
 
 **긍정적 영향**
 
@@ -591,11 +613,14 @@ SLOWLOG GET 10
 ```
 
 **실무**
-KEYS 명령을 SCAN으로 변경하고, 큰 데이터는 분할 저장하여 싱글 스레드로 인한 블로킹을 최소화했습니다.'
+KEYS 명령을 SCAN으로 변경하고, 큰 데이터는 분할 저장하여 싱글 스레드로 인한 블로킹을 최소화했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0011-000000000022';
 
 UPDATE questions SET explanation =
-'**Redis 트랜잭션 (MULTI/EXEC)**
+$md$
+**Redis 트랜잭션 (MULTI/EXEC)**
 
 여러 명령을 원자적으로 실행하는 기능입니다.
 
@@ -690,11 +715,14 @@ while True:
 - 간단한 경우만 사용 (복잡하면 Lua)
 
 **실무**
-장바구니 동시 수정을 WATCH/MULTI/EXEC로 처리하여 재고 일관성을 보장했습니다.'
+장바구니 동시 수정을 WATCH/MULTI/EXEC로 처리하여 재고 일관성을 보장했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0011-000000000023';
 
 UPDATE questions SET explanation =
-'**DISCARD**
+$md$
+**DISCARD**
 
 MULTI 이후 큐에 쌓인 명령을 취소하는 명령입니다.
 
@@ -753,11 +781,14 @@ if balance < 100:
 ```
 
 **실무**
-검증 실패 시 DISCARD로 트랜잭션을 안전하게 취소하여 부분 실행을 방지했습니다.'
+검증 실패 시 DISCARD로 트랜잭션을 안전하게 취소하여 부분 실행을 방지했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0011-000000000024';
 
 UPDATE questions SET explanation =
-'**Atomic 연산**
+$md$
+**Atomic 연산**
 
 Redis의 모든 명령은 원자적으로 실행되어 중간 상태가 노출되지 않습니다.
 
@@ -848,11 +879,14 @@ IF current > 100:
 - 경쟁 상태(Race Condition) 없음
 
 **실무**
-좋아요 버튼 중복 클릭 방지를 INCR로 구현하여 동시 요청에도 정확한 카운트를 유지했습니다.'
+좋아요 버튼 중복 클릭 방지를 INCR로 구현하여 동시 요청에도 정확한 카운트를 유지했습니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0011-000000000025';
 
 UPDATE questions SET explanation =
-'**Persistence 비교 (RDB vs AOF)**
+$md$
+**Persistence 비교 (RDB vs AOF)**
 
 **RDB (Redis Database)**
 - **방식**: 특정 시점 스냅샷
@@ -891,5 +925,7 @@ aof-use-rdb-preamble yes  # 빠른 복구 + 안전성
 ```
 
 **실무**
-대부분 RDB + AOF 혼합을 사용하여 빠른 복구와 데이터 안전성을 모두 확보합니다. 순수 캐시는 Persistence 비활성화합니다.'
+대부분 RDB + AOF 혼합을 사용하여 빠른 복구와 데이터 안전성을 모두 확보합니다. 순수 캐시는 Persistence 비활성화합니다.
+$md$
+
 WHERE id = 'b0000000-0000-0000-0011-000000000026';
