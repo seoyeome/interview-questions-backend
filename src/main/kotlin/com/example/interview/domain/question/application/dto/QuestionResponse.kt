@@ -10,6 +10,7 @@ data class QuestionResponse(
     val subCategoryId: UUID,
     val content: String,
     val difficulty: QuestionDifficulty,
+    val explanation: String?,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime
 ) {
@@ -20,6 +21,7 @@ data class QuestionResponse(
                 subCategoryId = question.subCategoryId.value,
                 content = question.content,
                 difficulty = question.difficulty,
+                explanation = question.explanation,
                 createdAt = question.createdAt,
                 updatedAt = question.updatedAt
             )

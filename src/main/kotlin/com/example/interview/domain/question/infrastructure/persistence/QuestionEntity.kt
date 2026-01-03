@@ -22,6 +22,9 @@ class QuestionEntity(
     @Enumerated(EnumType.STRING)
     val difficulty: QuestionDifficulty,
 
+    @Column(columnDefinition = "TEXT")
+    val explanation: String? = null,
+
     val createdAt: LocalDateTime = LocalDateTime.now(),
 
     val updatedAt: LocalDateTime = LocalDateTime.now()
@@ -31,7 +34,8 @@ class QuestionEntity(
             id = QuestionId.from(id),
             subCategoryId = SubCategoryId.from(subCategoryId),
             content = QuestionContent.from(content),
-            difficulty = difficulty
+            difficulty = difficulty,
+            explanation = explanation
         )
     }
 
@@ -41,7 +45,8 @@ class QuestionEntity(
                 id = question.id.value,
                 subCategoryId = question.subCategoryId.value,
                 content = question.content,
-                difficulty = question.difficulty
+                difficulty = question.difficulty,
+                explanation = question.explanation
             )
         }
     }

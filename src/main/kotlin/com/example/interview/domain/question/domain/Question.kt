@@ -9,6 +9,7 @@ class Question private constructor(
     private val _subCategoryId: SubCategoryId,
     private var _content: QuestionContent,
     private var _difficulty: QuestionDifficulty,
+    private var _explanation: String?,
     private val _createdAt: LocalDateTime,
     private var _updatedAt: LocalDateTime
 ) {
@@ -23,6 +24,9 @@ class Question private constructor(
 
     val difficulty: QuestionDifficulty
         get() = _difficulty
+
+    val explanation: String?
+        get() = _explanation
 
     val createdAt: LocalDateTime
         get() = _createdAt
@@ -58,13 +62,15 @@ class Question private constructor(
             id: QuestionId,
             subCategoryId: SubCategoryId,
             content: QuestionContent,
-            difficulty: QuestionDifficulty
+            difficulty: QuestionDifficulty,
+            explanation: String? = null
         ): Question {
             return Question(
                 _id = id,
                 _subCategoryId = subCategoryId,
                 _content = content,
                 _difficulty = difficulty,
+                _explanation = explanation,
                 _createdAt = LocalDateTime.now(),
                 _updatedAt = LocalDateTime.now()
             )
@@ -73,13 +79,15 @@ class Question private constructor(
         fun create(
             subCategoryId: SubCategoryId,
             content: String,
-            difficulty: QuestionDifficulty
+            difficulty: QuestionDifficulty,
+            explanation: String? = null
         ): Question {
             return Question(
                 _id = QuestionId.from(UUID.randomUUID()),
                 _subCategoryId = subCategoryId,
                 _content = QuestionContent.from(content),
                 _difficulty = difficulty,
+                _explanation = explanation,
                 _createdAt = LocalDateTime.now(),
                 _updatedAt = LocalDateTime.now()
             )
