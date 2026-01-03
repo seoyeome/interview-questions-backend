@@ -380,8 +380,8 @@ Lambda 트리거
 ```python
 # S3에 이미지 업로드 시 썸네일 생성
 def lambda_handler(event, context):
-    bucket = event[''Records''][0][''s3''][''bucket''][''name'']
-    key = event[''Records''][0][''s3''][''object''][''key'']
+    bucket = event['Records'][0]['s3']['bucket']['name']
+    key = event['Records'][0]['s3']['object']['key']
     # 이미지 다운로드 → 리사이징 → S3 업로드
 ```
 
@@ -586,13 +586,13 @@ CloudWatch Logs에서 "ERROR" 패턴 감지
 ```python
 import boto3
 
-cloudwatch = boto3.client(''cloudwatch'')
+cloudwatch = boto3.client('cloudwatch')
 cloudwatch.put_metric_data(
-    Namespace=''MyApp'',
+    Namespace='MyApp',
     MetricData=[{
-        ''MetricName'': ''OrderCount'',
-        ''Value'': 100,
-        ''Unit'': ''Count''
+        'MetricName': 'OrderCount',
+        'Value': 100,
+        'Unit': 'Count'
     }]
 )
 ```
@@ -1465,15 +1465,15 @@ import boto3
 import os
 from PIL import Image
 
-s3 = boto3.client(''s3'')
+s3 = boto3.client('s3')
 
 def lambda_handler(event, context):
     # S3 이벤트에서 버킷과 키 추출
-    bucket = event[''Records''][0][''s3''][''bucket''][''name'']
-    key = event[''Records''][0][''s3''][''object''][''key'']
+    bucket = event['Records'][0]['s3']['bucket']['name']
+    key = event['Records'][0]['s3']['object']['key']
 
     # 파일 다운로드
-    download_path = ''/tmp/original.jpg''
+    download_path = '/tmp/original.jpg'
     s3.download_file(bucket, key, download_path)
 
     # 이미지 리사이징
@@ -1481,11 +1481,11 @@ def lambda_handler(event, context):
     image.thumbnail((200, 200))
 
     # 썸네일 업로드
-    upload_path = ''/tmp/thumbnail.jpg''
+    upload_path = '/tmp/thumbnail.jpg'
     image.save(upload_path)
-    s3.upload_file(upload_path, bucket, f''thumbnails/{key}'')
+    s3.upload_file(upload_path, bucket, f'thumbnails/{key}')
 
-    return {''statusCode'': 200}
+    return {'statusCode': 200}
 ```
 
 **2. S3 버킷 이벤트 알림 설정**

@@ -65,9 +65,9 @@ if int(current) > 0:
 **Lua 스크립트로 해결**
 ```lua
 -- stock_decr.lua
-local stock = redis.call(''GET'', KEYS[1])
+local stock = redis.call('GET', KEYS[1])
 if tonumber(stock) > 0 then
-    redis.call(''DECR'', KEYS[1])
+    redis.call('DECR', KEYS[1])
     return 1
 else
     return 0
@@ -77,9 +77,9 @@ end
 **실행**
 ```python
 script = """
-local stock = redis.call(''GET'', KEYS[1])
+local stock = redis.call('GET', KEYS[1])
 if tonumber(stock) > 0 then
-    redis.call(''DECR'', KEYS[1])
+    redis.call('DECR', KEYS[1])
     return 1
 else
     return 0
@@ -208,12 +208,12 @@ public class SessionConfig {
 
 **Express (Node.js)**
 ```javascript
-const session = require(''express-session'');
-const RedisStore = require(''connect-redis'').default;
+const session = require('express-session');
+const RedisStore = require('connect-redis').default;
 
 app.use(session({
   store: new RedisStore({ client: redisClient }),
-  secret: ''secret'',
+  secret: 'secret',
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 1800000 } // 30분
@@ -433,7 +433,7 @@ data = redis_slave.get("user:1000")  # None 또는 이전 값!
 redis.set("user:1000", json.dumps(user))
 
 # 2. DB 직접 업데이트 (캐시 모르게)
-db.execute("UPDATE users SET name=''Bob'' WHERE id=1000")
+db.execute("UPDATE users SET name='Bob' WHERE id=1000")
 
 # 3. 캐시에서 읽기
 cached = redis.get("user:1000")  # 여전히 "Alice"
@@ -478,7 +478,7 @@ redis.set("balance", balance)  # 동시 요청 시 손실!
 **해결: Lua 스크립트 또는 WATCH**
 ```python
 # Lua 스크립트
-redis.eval("return redis.call(''INCRBY'', KEYS[1], ARGV[1])",
+redis.eval("return redis.call('INCRBY', KEYS[1], ARGV[1])",
            1, "balance", 100)
 ```
 

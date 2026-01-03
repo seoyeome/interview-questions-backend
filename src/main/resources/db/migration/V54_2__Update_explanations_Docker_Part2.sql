@@ -258,8 +258,8 @@ docker kill -s SIGUSR1 web
 
 ```javascript
 // server.js
-process.on(''SIGTERM'', () => {
-  console.log(''SIGTERM received, closing server...'');
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, closing server...');
 
   server.close(() => {
     // DB 연결 종료
@@ -268,7 +268,7 @@ process.on(''SIGTERM'', () => {
     // 진행 중인 작업 완료
     queue.finish();
 
-    console.log(''Graceful shutdown completed'');
+    console.log('Graceful shutdown completed');
     process.exit(0);
   });
 });
@@ -466,7 +466,7 @@ docker service update --image nginx:latest web
 **4. 스택 배포 (docker-compose와 유사):**
 ```yaml
 # stack.yml
-version: ''3.8''
+version: '3.8'
 
 services:
   web:
@@ -1291,7 +1291,7 @@ docker run -d -p 5432:5432 --name db postgres
 **Docker Compose에서:**
 
 ```yaml
-version: ''3.8''
+version: '3.8'
 
 services:
   web:
@@ -1814,13 +1814,13 @@ docker run -d \
 **3. 로그 필터링:**
 ```bash
 # JSON 로그 파싱
-docker logs web | jq ''.log''
+docker logs web | jq '.log'
 
 # 특정 레벨만
 docker logs web | grep "\[ERROR\]"
 
 # 시간대별 그룹화
-docker logs web | awk ''{print $1, $2}'' | uniq -c
+docker logs web | awk '{print $1, $2}' | uniq -c
 ```
 
 **실무 경험**
@@ -1847,7 +1847,7 @@ Docker 이미지를 저장하고 공유하는 저장소입니다.
 
 ```yaml
 # docker-compose.yml
-version: ''3.8''
+version: '3.8'
 
 services:
   registry:
@@ -1958,7 +1958,7 @@ docker run -d --name api --network mynetwork myapi
 **Docker Compose (더 간편)**
 
 ```yaml
-version: ''3.8''
+version: '3.8'
 
 services:
   db:
@@ -2115,7 +2115,7 @@ docker run -d \
 **Docker Compose에서:**
 
 ```yaml
-version: ''3.8''
+version: '3.8'
 
 services:
   web:
@@ -2123,10 +2123,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ''1.0''      # 최대 1 코어
+          cpus: '1.0'      # 최대 1 코어
           memory: 512M       # 최대 512MB
         reservations:
-          cpus: ''0.5''      # 최소 0.5 코어 보장
+          cpus: '0.5'      # 최소 0.5 코어 보장
           memory: 256M       # 최소 256MB 보장
 ```
 

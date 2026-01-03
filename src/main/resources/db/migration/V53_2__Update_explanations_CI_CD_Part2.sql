@@ -157,7 +157,7 @@ jobs:
 - uses: actions/cache@v3
   with:
     path: ~/.gradle/caches
-    key: gradle-${{ hashFiles(''**/*.gradle*'') }}
+    key: gradle-${{ hashFiles('**/*.gradle*') }}
 
 # 45분 → 10분으로 단축
 ```
@@ -262,8 +262,8 @@ GitHub Actions:
 on:
   push:
     paths:
-      - ''src/**''
-      - ''build.gradle''
+      - 'src/**'
+      - 'build.gradle'
 # docs 변경 시에는 빌드 안 함
 ```
 
@@ -288,7 +288,7 @@ jobs:
 
   build-user-service:
     needs: detect-changes
-    if: needs.detect-changes.outputs.user-service == ''true''
+    if: needs.detect-changes.outputs.user-service == 'true'
     runs-on: ubuntu-latest
     # user-service 변경 시에만 빌드
 ```
@@ -341,7 +341,7 @@ spec:
         version: green
 
 # 트래픽 전환 (Service selector 변경)
-kubectl patch service myapp -p ''{"spec":{"selector":{"version":"green"}}}''
+kubectl patch service myapp -p '{"spec":{"selector":{"version":"green"}}}'
 ```
 
 **Canary 배포**
@@ -640,10 +640,10 @@ spec:
 
 ```bash
 # Green으로 전환
-kubectl patch service myapp -p ''{"spec":{"selector":{"version":"green"}}}''
+kubectl patch service myapp -p '{"spec":{"selector":{"version":"green"}}}'
 
 # 문제 발생 시 즉시 Blue로 롤백
-kubectl patch service myapp -p ''{"spec":{"selector":{"version":"blue"}}}''
+kubectl patch service myapp -p '{"spec":{"selector":{"version":"blue"}}}'
 
 # 즉시 전환되어 다운타임 거의 없음
 ```
@@ -725,7 +725,7 @@ public class OrderService {
 **문제 발생 시:**
 ```bash
 # 코드 배포나 롤백 없이 즉시 기능 비활성화
-curl -X POST https://flags.company.com/api/flags/new-order-system -d ''{"enabled": false}''
+curl -X POST https://flags.company.com/api/flags/new-order-system -d '{"enabled": false}'
 
 # 1초 내에 모든 사용자가 안전한 버전 사용
 ```
@@ -757,7 +757,7 @@ jobs:
         id: metrics
         run: |
           # Prometheus에서 에러율 확인
-          ERROR_RATE=$(curl -s ''http://prometheus/api/v1/query?query=rate(http_errors[5m])'' | jq ''.data.result[0].value[1]'')
+          ERROR_RATE=$(curl -s 'http://prometheus/api/v1/query?query=rate(http_errors[5m])' | jq '.data.result[0].value[1]')
           if (( $(echo "$ERROR_RATE > 0.01" | bc -l) )); then
             echo "Error rate too high: $ERROR_RATE"
             exit 1
@@ -769,7 +769,7 @@ jobs:
           echo "Deployment failed, rolling back"
           kubectl rollout undo deployment/myapp
           # Slack 알림
-          curl -X POST https://hooks.slack.com/... -d ''{"text": "Deployment failed, rolled back to previous version"}''
+          curl -X POST https://hooks.slack.com/... -d '{"text": "Deployment failed, rolled back to previous version"}'
 ```
 
 **7. 롤백 테스트**
@@ -902,20 +902,20 @@ steps:
 **목표: 실제 사용자 시나리오 검증**
 ```javascript
 // Playwright 예시
-import { test, expect } from ''@playwright/test'';
+import { test, expect } from '@playwright/test';
 
-test(''user can login and view dashboard'', async ({ page }) => {
+test('user can login and view dashboard', async ({ page }) => {
   // 로그인 페이지 이동
-  await page.goto(''https://myapp.com/login'');
+  await page.goto('https://myapp.com/login');
 
   // 로그인
-  await page.fill(''#email'', ''test@example.com'');
-  await page.fill(''#password'', ''password123'');
-  await page.click(''button[type="submit"]'');
+  await page.fill('#email', 'test@example.com');
+  await page.fill('#password', 'password123');
+  await page.click('button[type="submit"]');
 
   // 대시보드 확인
-  await expect(page).toHaveURL(''https://myapp.com/dashboard'');
-  await expect(page.locator(''.welcome'')).toContainText(''Welcome'');
+  await expect(page).toHaveURL('https://myapp.com/dashboard');
+  await expect(page.locator('.welcome')).toContainText('Welcome');
 });
 ```
 
@@ -980,7 +980,7 @@ jobs:
 ```groovy
 // build.gradle
 plugins {
-    id ''jacoco''
+    id 'jacoco'
 }
 
 jacoco {
@@ -1207,7 +1207,7 @@ kubectl wait --for=condition=available deployment/myapp-green
 curl http://myapp-green-service/health
 
 # 3. 트래픽 전환
-kubectl patch service myapp -p ''{"spec":{"selector":{"version":"green"}}}''
+kubectl patch service myapp -p '{"spec":{"selector":{"version":"green"}}}'
 
 # 4. 모니터링 (문제 없으면 Blue 제거)
 kubectl delete deployment myapp-blue
@@ -1519,7 +1519,7 @@ terraform apply  # 인프라 생성
 
 **예시: ECS 클러스터**
 ```yaml
-AWSTemplateFormatVersion: ''2010-09-09''
+AWSTemplateFormatVersion: '2010-09-09'
 Resources:
   ECSCluster:
     Type: AWS::ECS::Cluster
@@ -1582,7 +1582,7 @@ name: Infrastructure Deployment
 on:
   push:
     paths:
-      - ''terraform/**''
+      - 'terraform/**'
     branches: [main]
 
 jobs:
@@ -1601,7 +1601,7 @@ jobs:
         run: terraform plan -out=tfplan
 
       - name: Terraform Apply
-        if: github.ref == ''refs/heads/main''
+        if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve tfplan
 
       - name: Output Infrastructure Info
@@ -1665,7 +1665,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: ''Terraform Plan:\n\n```\n${{ steps.plan.outputs.stdout }}\n```''
+              body: 'Terraform Plan:\n\n```\n${{ steps.plan.outputs.stdout }}\n```'
             })
 
 # PR에 Terraform Plan 결과가 자동으로 코멘트됨
@@ -1892,8 +1892,8 @@ updates:
   uses: aquasecurity/trivy-action@master
   with:
     image-ref: myapp:${{ github.sha }}
-    severity: ''CRITICAL,HIGH''
-    exit-code: ''1''  # 취약점 발견 시 CI 실패
+    severity: 'CRITICAL,HIGH'
+    exit-code: '1'  # 취약점 발견 시 CI 실패
 ```
 
 **4. 네트워크 보안**
@@ -2015,7 +2015,7 @@ jobs:
 # Pre-commit Hook (로컬)
 # .git/hooks/pre-commit
 #!/bin/bash
-if git diff --cached | grep -E ''(password|secret|key|token).*=.*[''"]''; then
+if git diff --cached | grep -E '(password|secret|key|token).*=.*['"]'; then
   echo "⚠️  Potential secret detected!"
   echo "Please remove secrets before committing."
   exit 1
@@ -2128,7 +2128,7 @@ name: User Service CI/CD
 on:
   push:
     paths:
-      - ''services/user/**''  # user 서비스 변경 시에만
+      - 'services/user/**'  # user 서비스 변경 시에만
     branches: [main]
 
 jobs:
@@ -2329,13 +2329,13 @@ jobs:
         with:
           filters: |
             user:
-              - ''services/user/**''
+              - 'services/user/**'
             order:
-              - ''services/order/**''
+              - 'services/order/**'
 
   build-user:
     needs: detect-changes
-    if: needs.detect-changes.outputs.user == ''true''
+    if: needs.detect-changes.outputs.user == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Build User Service
@@ -2343,7 +2343,7 @@ jobs:
 
   build-order:
     needs: detect-changes
-    if: needs.detect-changes.outputs.order == ''true''
+    if: needs.detect-changes.outputs.order == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Build Order Service

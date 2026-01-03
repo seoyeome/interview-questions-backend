@@ -169,7 +169,7 @@ steps:
   - name: Java 설정
     uses: actions/setup-java@v2
     with:
-      java-version: ''17''
+      java-version: '17'
 
   - name: Gradle 빌드
     run: ./gradlew build
@@ -364,7 +364,7 @@ on:
 on:
   push:
     tags:
-      - ''v*.*.*''    # v1.0.0 → Production 릴리스
+      - 'v*.*.*'    # v1.0.0 → Production 릴리스
 ```
 
 **Pull Request 검증**
@@ -477,8 +477,8 @@ UPDATE questions SET explanation =
 // Jenkinsfile
 pipeline {
   triggers {
-    cron(''H 2 * * *'')  // 매일 새벽 2시 빌드
-    pollSCM(''H/5 * * * *'')  // 5분마다 Git 변경 확인
+    cron('H 2 * * *')  // 매일 새벽 2시 빌드
+    pollSCM('H/5 * * * *')  // 5분마다 Git 변경 확인
   }
 }
 ```
@@ -504,22 +504,22 @@ pipeline {
   agent any
 
   stages {
-    stage(''Build'') {
+    stage('Build') {
       steps {
-        sh ''./gradlew build''
+        sh './gradlew build'
       }
     }
 
-    stage(''Test'') {
+    stage('Test') {
       steps {
-        sh ''./gradlew test''
+        sh './gradlew test'
       }
     }
 
-    stage(''Deploy'') {
-      when { branch ''main'' }
+    stage('Deploy') {
+      when { branch 'main' }
       steps {
-        sh ''kubectl apply -f k8s/''
+        sh 'kubectl apply -f k8s/'
       }
     }
   }
@@ -558,24 +558,24 @@ pipeline {
   agent any
 
   stages {
-    stage(''Build & Test'') {
+    stage('Build & Test') {
       steps {
-        sh ''./gradlew clean build test''
+        sh './gradlew clean build test'
       }
     }
 
-    stage(''Deploy to Dev'') {
-      when { branch ''develop'' }
+    stage('Deploy to Dev') {
+      when { branch 'develop' }
       steps {
-        sh ''kubectl apply -f k8s/dev/''
+        sh 'kubectl apply -f k8s/dev/'
       }
     }
 
-    stage(''Deploy to Prod'') {
-      when { branch ''main'' }
+    stage('Deploy to Prod') {
+      when { branch 'main' }
       steps {
-        input message: ''Deploy to Production?''
-        sh ''kubectl apply -f k8s/prod/''
+        input message: 'Deploy to Production?'
+        sh 'kubectl apply -f k8s/prod/'
       }
     }
   }
@@ -601,8 +601,8 @@ UPDATE questions SET explanation =
 pipeline {
   agent any
   stages {
-    stage(''Build'') {
-      steps { sh ''./gradlew build'' }
+    stage('Build') {
+      steps { sh './gradlew build' }
     }
   }
 }
@@ -617,27 +617,27 @@ pipeline {
   agent any
 
   stages {
-    stage(''Parallel Tests'') {
+    stage('Parallel Tests') {
       parallel {
-        stage(''Unit Test'') {
-          steps { sh ''npm run test:unit'' }
+        stage('Unit Test') {
+          steps { sh 'npm run test:unit' }
         }
-        stage(''Integration Test'') {
-          steps { sh ''npm run test:integration'' }
+        stage('Integration Test') {
+          steps { sh 'npm run test:integration' }
         }
-        stage(''E2E Test'') {
-          steps { sh ''npm run test:e2e'' }
+        stage('E2E Test') {
+          steps { sh 'npm run test:e2e' }
         }
       }
     }
 
-    stage(''Deploy'') {
+    stage('Deploy') {
       steps {
         script {
-          if (env.BRANCH_NAME == ''main'') {
-            sh ''kubectl apply -f k8s/prod/''
+          if (env.BRANCH_NAME == 'main') {
+            sh 'kubectl apply -f k8s/prod/'
           } else {
-            sh ''kubectl apply -f k8s/dev/''
+            sh 'kubectl apply -f k8s/dev/'
           }
         }
       }
@@ -653,33 +653,33 @@ pipeline {
 pipeline {
   agent {
     docker {
-      image ''maven:3.8.1-jdk-11''
+      image 'maven:3.8.1-jdk-11'
     }
   }
 }
 
 // 또는 특정 노드
 agent {
-  label ''linux-build-server''
+  label 'linux-build-server'
 }
 ```
 
 **2. Stages (단계)**
 ```groovy
 stages {
-  stage(''Checkout'') { ... }
-  stage(''Build'') { ... }
-  stage(''Test'') { ... }
-  stage(''Deploy'') { ... }
+  stage('Checkout') { ... }
+  stage('Build') { ... }
+  stage('Test') { ... }
+  stage('Deploy') { ... }
 }
 ```
 
 **3. Steps (실행 명령)**
 ```groovy
 steps {
-  sh ''echo "Building..."''
-  sh ''./gradlew build''
-  junit ''**/target/*.xml''
+  sh 'echo "Building..."'
+  sh './gradlew build'
+  junit '**/target/*.xml'
 }
 ```
 
@@ -687,14 +687,14 @@ steps {
 ```groovy
 post {
   always {
-    junit ''**/test-results/*.xml''
+    junit '**/test-results/*.xml'
   }
   success {
-    slackSend channel: ''#builds'',
+    slackSend channel: '#builds',
               message: "Build Successful: ${env.JOB_NAME}"
   }
   failure {
-    mail to: ''team@company.com'',
+    mail to: 'team@company.com',
          subject: "Build Failed: ${env.JOB_NAME}"
   }
 }
@@ -706,29 +706,29 @@ pipeline {
   agent any
 
   environment {
-    DOCKER_REGISTRY = ''myregistry.io''
-    APP_NAME = ''user-service''
+    DOCKER_REGISTRY = 'myregistry.io'
+    APP_NAME = 'user-service'
   }
 
   stages {
-    stage(''Build'') {
+    stage('Build') {
       steps {
-        sh ''./gradlew clean build''
+        sh './gradlew clean build'
       }
     }
 
-    stage(''Test'') {
+    stage('Test') {
       parallel {
-        stage(''Unit'') {
-          steps { sh ''./gradlew test'' }
+        stage('Unit') {
+          steps { sh './gradlew test' }
         }
-        stage(''Integration'') {
-          steps { sh ''./gradlew integrationTest'' }
+        stage('Integration') {
+          steps { sh './gradlew integrationTest' }
         }
       }
     }
 
-    stage(''Docker Build'') {
+    stage('Docker Build') {
       steps {
         sh """
           docker build -t ${DOCKER_REGISTRY}/${APP_NAME}:${BUILD_NUMBER} .
@@ -737,10 +737,10 @@ pipeline {
       }
     }
 
-    stage(''Deploy to Dev'') {
-      when { branch ''develop'' }
+    stage('Deploy to Dev') {
+      when { branch 'develop' }
       steps {
-        sh ''kubectl set image deployment/user-service user-service=${DOCKER_REGISTRY}/${APP_NAME}:${BUILD_NUMBER}''
+        sh 'kubectl set image deployment/user-service user-service=${DOCKER_REGISTRY}/${APP_NAME}:${BUILD_NUMBER}'
       }
     }
   }
@@ -777,26 +777,26 @@ pipeline {
   agent any
 
   environment {
-    APP_NAME = ''myapp''
+    APP_NAME = 'myapp'
   }
 
   stages {
-    stage(''Build'') {
+    stage('Build') {
       steps {
-        sh ''./gradlew build''
+        sh './gradlew build'
       }
     }
 
-    stage(''Test'') {
+    stage('Test') {
       steps {
-        sh ''./gradlew test''
+        sh './gradlew test'
       }
     }
   }
 
   post {
     always {
-      junit ''**/test-results/*.xml''
+      junit '**/test-results/*.xml'
     }
   }
 }
@@ -813,27 +813,27 @@ pipeline {
 **구조**
 ```groovy
 node {
-  def appName = ''myapp''
+  def appName = 'myapp'
 
   try {
-    stage(''Build'') {
-      sh ''./gradlew build''
+    stage('Build') {
+      sh './gradlew build'
     }
 
-    stage(''Test'') {
-      sh ''./gradlew test''
+    stage('Test') {
+      sh './gradlew test'
     }
 
-    stage(''Deploy'') {
-      if (env.BRANCH_NAME == ''main'') {
-        sh ''kubectl apply -f k8s/''
+    stage('Deploy') {
+      if (env.BRANCH_NAME == 'main') {
+        sh 'kubectl apply -f k8s/'
       }
     }
   } catch (Exception e) {
-    currentBuild.result = ''FAILURE''
+    currentBuild.result = 'FAILURE'
     throw e
   } finally {
-    junit ''**/test-results/*.xml''
+    junit '**/test-results/*.xml'
   }
 }
 ```
@@ -853,19 +853,19 @@ pipeline {
   agent any
 
   stages {
-    stage(''Deploy'') {
+    stage('Deploy') {
       when {
         anyOf {
-          branch ''main''
-          branch ''develop''
+          branch 'main'
+          branch 'develop'
         }
       }
       steps {
         script {
-          if (env.BRANCH_NAME == ''main'') {
-            sh ''kubectl apply -f k8s/prod/''
+          if (env.BRANCH_NAME == 'main') {
+            sh 'kubectl apply -f k8s/prod/'
           } else {
-            sh ''kubectl apply -f k8s/dev/''
+            sh 'kubectl apply -f k8s/dev/'
           }
         }
       }
@@ -877,9 +877,9 @@ pipeline {
 **Scripted:**
 ```groovy
 node {
-  stage(''Deploy'') {
-    if (env.BRANCH_NAME == ''main'' || env.BRANCH_NAME == ''develop'') {
-      def environment = (env.BRANCH_NAME == ''main'') ? ''prod'' : ''dev''
+  stage('Deploy') {
+    if (env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'develop') {
+      def environment = (env.BRANCH_NAME == 'main') ? 'prod' : 'dev'
       sh "kubectl apply -f k8s/${environment}/"
     }
   }
@@ -930,8 +930,8 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: ''17''
-          distribution: ''temurin''
+          java-version: '17'
+          distribution: 'temurin'
 
       - name: Build with Gradle
         run: ./gradlew build
@@ -948,7 +948,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == ''refs/heads/main''
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - uses: actions/checkout@v3
@@ -1027,7 +1027,7 @@ test:
   image: gradle:7.6-jdk17
   script:
     - ./gradlew test
-  coverage: ''/Total.*?([0-9]{1,3})%/''
+  coverage: '/Total.*?([0-9]{1,3})%/'
 
 deploy_prod:
   stage: deploy

@@ -1043,12 +1043,12 @@ UPDATE questions SET explanation =
 **DynamoDB**
 ```python
 # Primary Key로 즉시 조회
-response = table.get_item(Key={''session_id'': ''abc123''})
+response = table.get_item(Key={'session_id': 'abc123'})
 ```
 
 **RDS**
 ```sql
-SELECT * FROM sessions WHERE session_id = ''abc123'';
+SELECT * FROM sessions WHERE session_id = 'abc123';
 -- 인덱스 있어도 DynamoDB보다 느림
 ```
 
@@ -1176,7 +1176,7 @@ DynamoDB Global Tables
 SELECT u.name, o.total
 FROM users u
 JOIN orders o ON u.id = o.user_id
-WHERE o.created_at > ''2024-01-01'';
+WHERE o.created_at > '2024-01-01';
 
 -- DynamoDB: 불가능 (애플리케이션에서 처리)
 ```
@@ -1263,18 +1263,18 @@ import boto3
 from PIL import Image
 
 def lambda_handler(event, context):
-    s3 = boto3.client(''s3'')
-    bucket = event[''Records''][0][''s3''][''bucket''][''name'']
-    key = event[''Records''][0][''s3''][''object''][''key'']
+    s3 = boto3.client('s3')
+    bucket = event['Records'][0]['s3']['bucket']['name']
+    key = event['Records'][0]['s3']['object']['key']
 
     # 이미지 다운로드 및 리사이징
-    s3.download_file(bucket, key, ''/tmp/original.jpg'')
-    img = Image.open(''/tmp/original.jpg'')
+    s3.download_file(bucket, key, '/tmp/original.jpg')
+    img = Image.open('/tmp/original.jpg')
     img.thumbnail((200, 200))
-    img.save(''/tmp/thumb.jpg'')
+    img.save('/tmp/thumb.jpg')
 
     # 썸네일 업로드
-    s3.upload_file(''/tmp/thumb.jpg'', bucket, f''thumbnails/{key}'')
+    s3.upload_file('/tmp/thumb.jpg', bucket, f'thumbnails/{key}')
 ```
 
 ---

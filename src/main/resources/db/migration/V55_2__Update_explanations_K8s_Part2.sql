@@ -517,7 +517,7 @@ spec:
 - HAProxy
 
 **실무 경험**
-NGINX Ingress Controller로 20개 마이크로서비스를 단일 진입점으로 관리하고, Let''s Encrypt로 TLS 인증서를 자동 갱신하여 모든 서비스에 HTTPS를 적용했습니다.'
+NGINX Ingress Controller로 20개 마이크로서비스를 단일 진입점으로 관리하고, Let's Encrypt로 TLS 인증서를 자동 갱신하여 모든 서비스에 HTTPS를 적용했습니다.'
 WHERE id = 'b0000000-0000-0000-0014-000000000014';
 
 -- Question 21 (0x15): 쿠버네티스의 etcd는 어떤 역할을 하나요?

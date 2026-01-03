@@ -478,7 +478,7 @@ docker run -d -p 8083:80 --name web3 nginx
 **2. 컨테이너 수정 vs 이미지 불변:**
 ```bash
 # 컨테이너에 파일 생성
-docker exec web1 sh -c "echo ''Hello'' > /tmp/test.txt"
+docker exec web1 sh -c "echo 'Hello' > /tmp/test.txt"
 
 # web1 컨테이너에만 영향
 # web2, web3 컨테이너에는 영향 없음
@@ -1404,7 +1404,7 @@ docker run -d \
 **Docker Compose로 실행 (간단):**
 ```yaml
 # docker-compose.yml
-version: ''3.8''
+version: '3.8'
 
 services:
   postgres:
@@ -1514,7 +1514,7 @@ services:
 
 **풀스택 애플리케이션:**
 ```yaml
-version: ''3.8''
+version: '3.8'
 
 services:
   # Database
@@ -1575,7 +1575,7 @@ volumes:
 **개발 환경 설정:**
 ```yaml
 # docker-compose.dev.yml
-version: ''3.8''
+version: '3.8'
 
 services:
   backend:
@@ -1887,7 +1887,7 @@ tail -f /var/log/app/app.log
 
 **Docker Compose에서 볼륨:**
 ```yaml
-version: ''3.8''
+version: '3.8'
 
 services:
   postgres:
@@ -2028,7 +2028,7 @@ docker run -d --name db --network backend-net postgres
 **Docker Compose 네트워킹:**
 
 ```yaml
-version: ''3.8''
+version: '3.8'
 
 services:
   frontend:
@@ -2113,7 +2113,7 @@ curl http://db:5432  # ✅ 작동!
 **실전 마이크로서비스 네트워크:**
 
 ```yaml
-version: ''3.8''
+version: '3.8'
 
 services:
   # 프록시 (외부 노출)
