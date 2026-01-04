@@ -6,15 +6,18 @@ import com.example.interview.domain.subcategory.application.service.SubCategoryS
 import com.example.interview.domain.subcategory.domain.SubCategoryId
 import com.example.interview.domain.subcategory.presentation.dto.CreateSubCategoryRequest
 import com.example.interview.domain.subcategory.presentation.dto.UpdateSubCategoryRequest
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import java.util.UUID
+import kotlin.system.measureTimeMillis
 
 @RestController
 @RequestMapping("/api/v1/sub-categories")
 class SubCategoryController(
     private val subCategoryService: SubCategoryService
 ) {
+    private val logger = LoggerFactory.getLogger(SubCategoryController::class.java)
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createSubCategory(@RequestBody request: CreateSubCategoryRequest): SubCategoryResponse {
@@ -42,7 +45,12 @@ class SubCategoryController(
 
     @GetMapping
     fun getAllSubCategories(): List<SubCategoryResponse> {
-        return subCategoryService.getAllSubCategories()
+        var result: List<SubCategoryResponse>
+        val elapsed = measureTimeMillis {
+            result = subCategoryService.getAllSubCategories()
+        }
+        logger.info("GET /api/v1/sub-categories - ${result.size}개, ${elapsed}ms")
+        return result
     }
 
     @GetMapping("/category/{categoryId}")

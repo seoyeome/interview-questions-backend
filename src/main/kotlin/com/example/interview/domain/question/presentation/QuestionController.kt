@@ -7,15 +7,18 @@ import com.example.interview.domain.question.domain.QuestionId
 import com.example.interview.domain.question.presentation.dto.CreateQuestionRequest
 import com.example.interview.domain.question.presentation.dto.UpdateQuestionRequest
 import com.example.interview.domain.subcategory.domain.SubCategoryId
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import java.util.UUID
+import kotlin.system.measureTimeMillis
 
 @RestController
 @RequestMapping("/api/v1/questions")
 class QuestionController(
     private val questionService: QuestionService
 ) {
+    private val logger = LoggerFactory.getLogger(QuestionController::class.java)
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createQuestion(@RequestBody request: CreateQuestionRequest): QuestionResponse {
@@ -43,7 +46,12 @@ class QuestionController(
 
     @GetMapping
     fun getAllQuestions(): List<QuestionResponse> {
-        return questionService.getAllQuestions()
+        var result: List<QuestionResponse>
+        val elapsed = measureTimeMillis {
+            result = questionService.getAllQuestions()
+        }
+        logger.info("GET /api/v1/questions - 전체 조회: ${result.size}개, ${elapsed}ms")
+        return result
     }
 
     @GetMapping("/sub-category/{subCategoryId}")
@@ -62,7 +70,12 @@ class QuestionController(
         @RequestParam(required = false) subCategoryId: String?,
         @RequestParam(required = false) difficulty: String?
     ): QuestionResponse? {
-        val difficultyEnum = difficulty?.let { QuestionDifficulty.valueOf(it) }
-        return questionService.getRandomQuestion(categoryId, subCategoryId, difficultyEnum)
+        var result: QuestionResponse?
+        val elapsed = measureTimeMillis {
+            val difficultyEnum = difficulty?.let { QuestionDifficulty.valueOf(it) }
+            result = questionService.getRandomQuestion(categoryId, subCategoryId, difficultyEnum)
+        }
+        logger.info("GET /api/v1/questions/random - categoryId=$categoryId, subCategoryId=$subCategoryId, difficulty=$difficulty, ${elapsed}ms")
+        return result
     }
 } 
