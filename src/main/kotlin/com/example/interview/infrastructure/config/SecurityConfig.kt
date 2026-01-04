@@ -43,6 +43,9 @@ class SecurityConfig(
                         "/swagger-ui/**",
                         "/swagger-ui.html"
                     ).permitAll()
+                    // Community - GET only public
+                    .requestMatchers("/api/posts").permitAll()
+                    .requestMatchers("/api/posts/{id}").permitAll()
                     // Protected endpoints
                     .anyRequest().authenticated()
             }
