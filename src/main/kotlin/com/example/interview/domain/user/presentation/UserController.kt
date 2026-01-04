@@ -12,10 +12,12 @@ import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.bind.annotation.*
+import kotlin.system.measureTimeMillis
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -25,6 +27,7 @@ class UserController(
     private val passwordEncoder: BCryptPasswordEncoder,
     private val kakaoUnlinkService: KakaoUnlinkService
 ) {
+    private val logger = LoggerFactory.getLogger(UserController::class.java)
 
     @GetMapping("/profile")
     fun getProfile(request: HttpServletRequest): ResponseEntity<ApiResponse<UserProfileResponse>> {
@@ -53,14 +56,21 @@ class UserController(
      */
     @GetMapping("/tutorial-status")
     fun getTutorialStatus(request: HttpServletRequest): ResponseEntity<ApiResponse<Boolean>> {
-        val userId = getUserIdFromToken(request)
-            ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+        var result: ResponseEntity<ApiResponse<Boolean>>
+        val elapsed = measureTimeMillis {
+            val userId = getUserIdFromToken(request)
+            if (userId == null) {
+                result = ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+                return@measureTimeMillis
+            }
 
-        val user = userRepository.findById(userId).orElseThrow {
-            throw IllegalArgumentException("사용자를 찾을 수 없습니다")
+            val user = userRepository.findById(userId).orElseThrow {
+                throw IllegalArgumentException("사용자를 찾을 수 없습니다")
+            }
+            result = ResponseEntity.ok(ApiResponse.success(user.tutorialCompleted))
         }
-
-        return ResponseEntity.ok(ApiResponse.success(user.tutorialCompleted))
+        logger.info("GET /api/v1/user/tutorial-status - ${elapsed}ms")
+        return result
     }
 
     /**
