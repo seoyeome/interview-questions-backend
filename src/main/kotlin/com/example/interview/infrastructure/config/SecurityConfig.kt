@@ -28,13 +28,9 @@ class SecurityConfig(
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests { authorize ->
                 authorize
-                    // Public endpoints
+                    // Public endpoints (인증 불필요)
                     .requestMatchers(
                         "/api/v1/auth/**",
-                        "/api/v1/categories/**",
-                        "/api/v1/sub-categories/**",
-                        "/api/v1/questions/**",
-                        "/api/v1/ai/**",
                         "/api/v1/webhook/**",
                         "/oauth2/**",
                         "/login/**",
@@ -43,7 +39,7 @@ class SecurityConfig(
                         "/swagger-ui/**",
                         "/swagger-ui.html"
                     ).permitAll()
-                    // Protected endpoints
+                    // Protected endpoints (인증 필수)
                     .anyRequest().authenticated()
             }
             .oauth2Login { oauth2 ->

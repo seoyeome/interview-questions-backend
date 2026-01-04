@@ -76,20 +76,8 @@ class OAuth2AuthenticationSuccessHandler(
         // JWT 토큰 생성
         val jwtToken = jwtTokenProvider.generateToken(user.id!!, user.email)
 
-        // HttpOnly 쿠키로 토큰 설정
-        val cookie = Cookie("token", jwtToken).apply {
-            isHttpOnly = true
-            secure = cookieSecure
-            path = "/"
-            maxAge = 86400 // 24시간
-            if (cookieSameSite.isNotBlank()) {
-                setAttribute("SameSite", cookieSameSite)
-            }
-        }
-        response.addCookie(cookie)
-
-        // 프론트엔드로 리다이렉트 (토큰은 쿠키에 있으므로 URL에서 제거)
-        redirectStrategy.sendRedirect(request, response, redirectUri)
+        // 프론트엔드로 리다이렉트 (JWT를 쿼리 파라미터로 전달)
+        redirectStrategy.sendRedirect(request, response, "$redirectUri?token=$jwtToken")
     }
 
     private fun extractKakaoUserInfo(oAuth2User: OAuth2User): OAuth2UserInfo {
