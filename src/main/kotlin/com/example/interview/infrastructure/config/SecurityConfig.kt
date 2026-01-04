@@ -43,9 +43,10 @@ class SecurityConfig(
                         "/swagger-ui/**",
                         "/swagger-ui.html"
                     ).permitAll()
-                    // Community - GET only public
-                    .requestMatchers("/api/posts").permitAll()
-                    .requestMatchers("/api/posts/{id}").permitAll()
+                    // Community - GET only public, POST/PUT/DELETE require auth
+                    .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/posts").permitAll()
+                    .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/posts/{id}").permitAll()
+                    .requestMatchers("/api/posts/**").authenticated()
                     // Protected endpoints
                     .anyRequest().authenticated()
             }
