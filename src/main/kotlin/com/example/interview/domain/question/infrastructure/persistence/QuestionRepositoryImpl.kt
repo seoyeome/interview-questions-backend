@@ -37,4 +37,16 @@ class QuestionRepositoryImpl(
     override fun existsByContent(content: String): Boolean {
         return jpaRepository.existsByContent(content)
     }
+
+    override fun findRandomQuestion(
+        categoryId: String?,
+        subCategoryId: String?,
+        difficulty: QuestionDifficulty?
+    ): Question? {
+        return jpaRepository.findRandomQuestion(
+            categoryId,
+            subCategoryId,
+            difficulty?.name
+        )?.toDomain()
+    }
 } 

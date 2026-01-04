@@ -88,4 +88,13 @@ class QuestionServiceImpl(
         return questionRepository.findAllByDifficulty(difficulty)
             .map { QuestionResponse.from(it) }
     }
+
+    override fun getRandomQuestion(
+        categoryId: String?,
+        subCategoryId: String?,
+        difficulty: QuestionDifficulty?
+    ): QuestionResponse? {
+        val question = questionRepository.findRandomQuestion(categoryId, subCategoryId, difficulty)
+        return question?.let { QuestionResponse.from(it) }
+    }
 } 

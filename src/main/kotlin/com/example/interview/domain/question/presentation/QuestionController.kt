@@ -55,4 +55,14 @@ class QuestionController(
     fun getQuestionsByDifficulty(@PathVariable difficulty: String): List<QuestionResponse> {
         return questionService.getQuestionsByDifficulty(QuestionDifficulty.valueOf(difficulty))
     }
+
+    @GetMapping("/random")
+    fun getRandomQuestion(
+        @RequestParam(required = false) categoryId: String?,
+        @RequestParam(required = false) subCategoryId: String?,
+        @RequestParam(required = false) difficulty: String?
+    ): QuestionResponse? {
+        val difficultyEnum = difficulty?.let { QuestionDifficulty.valueOf(it) }
+        return questionService.getRandomQuestion(categoryId, subCategoryId, difficultyEnum)
+    }
 } 

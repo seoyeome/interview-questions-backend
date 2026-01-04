@@ -10,4 +10,5 @@ interface QuestionRepository {
     fun findAllBySubCategoryId(subCategoryId: SubCategoryId): List<Question>
     fun findAllByDifficulty(difficulty: QuestionDifficulty): List<Question>
     fun existsByContent(content: String): Boolean
+    fun findRandomQuestion(categoryId: String?, subCategoryId: String?, difficulty: QuestionDifficulty?): Question?
 } 

@@ -15,4 +15,5 @@ interface QuestionService {
     fun getAllQuestions(): List<QuestionResponse>
     fun getQuestionsBySubCategory(subCategoryId: SubCategoryId): List<QuestionResponse>
     fun getQuestionsByDifficulty(difficulty: QuestionDifficulty): List<QuestionResponse>
+    fun getRandomQuestion(categoryId: String?, subCategoryId: String?, difficulty: QuestionDifficulty?): QuestionResponse?
 } 
