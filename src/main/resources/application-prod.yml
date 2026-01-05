@@ -61,13 +61,13 @@ logging:
     org.springframework.security: DEBUG
     org.hibernate: INFO
 
-# OAuth2 리다이렉트 URI (Vercel Rewrites를 통해 Same-Site로 처리됨)
+# OAuth2 리다이렉트 URI (Next.js API Route로 변경)
 app:
   oauth2:
-    redirect-uri: https://interview-questions-frontend-zeta.vercel.app/auth/callback
+    redirect-uri: https://interview-questions-frontend-zeta.vercel.app/api/auth/callback
   cookie:
     secure: true  # HTTPS에서만 쿠키 전송
-    same-site: "Lax"  # Same-Site 쿠키 (Vercel Rewrites로 동일 도메인 처리)
+    same-site: "Lax"  # Same-Site 쿠키
 
 sentry:
   dsn: ${SENTRY_DSN}

@@ -52,7 +52,7 @@ jwt:
 # OAuth2 리다이렉트 URI
 app:
   oauth2:
-    redirect-uri: http://localhost:3000/auth/callback
+    redirect-uri: http://localhost:3000/api/auth/callback
 
 # Sentry (에러 추적)
 sentry:
