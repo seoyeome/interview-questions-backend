@@ -9,7 +9,6 @@ import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.bind.annotation.*
 import java.util.UUID
 
@@ -21,10 +20,9 @@ class PostController(
 
     @PostMapping
     fun createPost(
-        @AuthenticationPrincipal userDetails: UserDetails,
+        @AuthenticationPrincipal userId: Long,
         @RequestBody request: PostCreateRequest
     ): ResponseEntity<PostResponse> {
-        val userId = userDetails.username.toLong()
         val response = postService.createPost(userId, request)
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
@@ -40,10 +38,9 @@ class PostController(
 
     @GetMapping("/my")
     fun getMyPosts(
-        @AuthenticationPrincipal userDetails: UserDetails,
+        @AuthenticationPrincipal userId: Long,
         @PageableDefault(size = 20, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable
     ): ResponseEntity<Page<PostResponse>> {
-        val userId = userDetails.username.toLong()
         val response = postService.getMyPosts(userId, pageable)
         return ResponseEntity.ok(response)
     }
@@ -56,21 +53,19 @@ class PostController(
 
     @PutMapping("/{id}")
     fun updatePost(
-        @AuthenticationPrincipal userDetails: UserDetails,
+        @AuthenticationPrincipal userId: Long,
         @PathVariable id: UUID,
         @RequestBody request: PostUpdateRequest
     ): ResponseEntity<PostResponse> {
-        val userId = userDetails.username.toLong()
         val response = postService.updatePost(userId, id, request)
         return ResponseEntity.ok(response)
     }
 
     @DeleteMapping("/{id}")
     fun deletePost(
-        @AuthenticationPrincipal userDetails: UserDetails,
+        @AuthenticationPrincipal userId: Long,
         @PathVariable id: UUID
     ): ResponseEntity<Void> {
-        val userId = userDetails.username.toLong()
         postService.deletePost(userId, id)
         return ResponseEntity.noContent().build()
     }
