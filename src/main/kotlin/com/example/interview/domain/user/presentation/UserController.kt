@@ -195,8 +195,19 @@ class UserController(
     }
 
     private fun getUserIdFromToken(request: HttpServletRequest): Long? {
-        val cookies = request.cookies ?: return null
-        val tokenCookie = cookies.find { it.name == "token" } ?: return null
-        return jwtTokenProvider.getUserIdFromToken(tokenCookie.value)
+        val token = request.cookies
+            ?.firstOrNull { it.name == "token" }
+            ?.value
+            ?.takeIf { it.isNotBlank() }
+            ?: run {
+                val bearerToken = request.getHeader("Authorization")
+                if (!bearerToken.isNullOrBlank() && bearerToken.startsWith("Bearer ")) {
+                    bearerToken.substring(7).trim().takeIf { it.isNotBlank() }
+                } else {
+                    null
+                }
+            }
+
+        return token?.let { jwtTokenProvider.getUserIdFromToken(it) }
     }
 }
