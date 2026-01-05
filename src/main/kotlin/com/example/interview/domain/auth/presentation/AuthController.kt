@@ -9,6 +9,7 @@ import com.example.interview.domain.user.domain.UserRole
 import com.example.interview.infrastructure.common.dto.ApiResponse
 import com.example.interview.infrastructure.security.JwtTokenProvider
 import jakarta.servlet.http.Cookie
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -94,7 +95,10 @@ class AuthController(
     }
 
     @PostMapping("/logout")
-    fun logout(response: HttpServletResponse): ResponseEntity<ApiResponse<Unit>> {
+    fun logout(
+        request: HttpServletRequest,
+        response: HttpServletResponse
+    ): ResponseEntity<ApiResponse<Unit>> {
         // 쿠키 삭제
         val cookie = Cookie("token", "").apply {
             isHttpOnly = true
@@ -104,6 +108,13 @@ class AuthController(
             setAttribute("SameSite", "None")
         }
         response.addCookie(cookie)
+
+        // Spring Security 세션 무효화 (OAuth2 인증 정보 포함)
+        try {
+            request.session?.invalidate()
+        } catch (e: IllegalStateException) {
+            // 이미 무효화된 세션인 경우 무시
+        }
 
         return ResponseEntity.ok(ApiResponse.success("로그아웃 성공"))
     }
