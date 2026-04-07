@@ -33,16 +33,17 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
-# Gemini API 설정
-gemini:
-  api:
-    key: ${GEMINI_API_KEY}
-  model: ${GEMINI_MODEL:gemini-2.0-flash}
-
-# AI Quota 설정
+# AI 설정
 ai:
+  provider: ${AI_PROVIDER:groq}  # groq 또는 gemini
+  groq:
+    api-key: ${GROQ_API_KEY:}
+    model: ${GROQ_MODEL:llama-3.3-70b-versatile}
+  gemini:
+    api-key: ${GEMINI_API_KEY:}
+    model: ${GEMINI_MODEL:gemini-2.0-flash}
   quota:
-    daily-limit: 1  # 1일 AI 생성 횟수 제한 (Gemini 무료: 하루 20회, 1분당 5회)
+    daily-limit: 10  # Groq 무료 한도 넉넉하므로 늘림
 
 # JWT 설정
 jwt:

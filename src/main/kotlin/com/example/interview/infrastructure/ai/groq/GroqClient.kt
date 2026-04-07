@@ -1,21 +1,28 @@
-package com.example.interview.infrastructure.ai
+package com.example.interview.infrastructure.ai.groq
 
+import com.example.interview.infrastructure.ai.AIClient
+import com.example.interview.infrastructure.ai.dto.AIGeneratedQuestion
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Component
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.springframework.http.MediaType
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
 
-@Component
-class GeminiClient(
-    @Value("\${gemini.api.key}") private val apiKey: String,
+class GroqClient(
+    private val apiKey: String,
+    private val model: String,
     private val restClient: RestClient.Builder
-) {
-    private val client = restClient
-        .baseUrl("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent")
-        .build()
+) : AIClient {
 
-    fun generateQuestion(
+    private val client by lazy {
+        restClient
+            .baseUrl("https://api.groq.com/openai/v1/chat/completions")
+            .defaultHeader("Authorization", "Bearer $apiKey")
+            .defaultHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+            .build()
+    }
+
+    override fun generateQuestion(
         category: String,
         subCategory: String,
         difficulty: String
@@ -23,36 +30,32 @@ class GeminiClient(
         val prompt = buildPrompt(category, subCategory, difficulty)
 
         return try {
-            val request = GeminiRequest(
-                contents = listOf(
-                    Content(
-                        parts = listOf(Part(text = prompt))
-                    )
+            val request = GroqRequest(
+                model = model,
+                messages = listOf(
+                    GroqMessage(role = "user", content = prompt)
                 ),
-                generationConfig = GenerationConfig(
-                    temperature = 0.9,
-                    topK = 40,
-                    topP = 0.95,
-                    maxOutputTokens = 512
-                )
+                temperature = 0.9,
+                maxTokens = 512
             )
 
             val response = client.post()
-                .uri { it.queryParam("key", apiKey).build() }
                 .body(request)
                 .retrieve()
-                .body<GeminiResponse>()
+                .body<GroqResponse>()
 
-            val generatedText = response?.candidates?.firstOrNull()
-                ?.content?.parts?.firstOrNull()?.text
+            val generatedText = response?.choices?.firstOrNull()
+                ?.message?.content
                 ?: return null
 
             parseAIResponse(generatedText)
         } catch (e: Exception) {
-            println("Gemini API 호출 실패: ${e.message}")
+            println("Groq API 호출 실패: ${e.message}")
             null
         }
     }
+
+    override fun getProviderName(): String = "Groq"
 
     private fun buildPrompt(category: String, subCategory: String, difficulty: String): String {
         return """
@@ -76,7 +79,6 @@ class GeminiClient(
 
     private fun parseAIResponse(text: String): AIGeneratedQuestion? {
         return try {
-            // 마크다운 코드 블록 제거
             var jsonText = text.trim()
             if (jsonText.startsWith("```json")) {
                 jsonText = jsonText.removePrefix("```json").removeSuffix("```").trim()
@@ -84,8 +86,7 @@ class GeminiClient(
                 jsonText = jsonText.removePrefix("```").removeSuffix("```").trim()
             }
 
-            // JSON 파싱
-            val objectMapper = com.fasterxml.jackson.module.kotlin.jacksonObjectMapper()
+            val objectMapper = jacksonObjectMapper()
             objectMapper.readValue(jsonText, AIGeneratedQuestion::class.java)
         } catch (e: Exception) {
             println("AI 응답 파싱 실패: ${e.message}")
@@ -94,37 +95,24 @@ class GeminiClient(
     }
 }
 
-// Request/Response DTOs
-data class GeminiRequest(
-    val contents: List<Content>,
-    val generationConfig: GenerationConfig
-)
-
-data class Content(
-    val parts: List<Part>
-)
-
-data class Part(
-    val text: String
-)
-
-data class GenerationConfig(
+// Groq API Request/Response DTOs (OpenAI 호환)
+data class GroqRequest(
+    val model: String,
+    val messages: List<GroqMessage>,
     val temperature: Double,
-    val topK: Int,
-    val topP: Double,
-    val maxOutputTokens: Int
+    @JsonProperty("max_tokens")
+    val maxTokens: Int
 )
 
-data class GeminiResponse(
-    val candidates: List<Candidate>?
+data class GroqMessage(
+    val role: String,
+    val content: String
 )
 
-data class Candidate(
-    val content: Content
+data class GroqResponse(
+    val choices: List<GroqChoice>?
 )
 
-data class AIGeneratedQuestion(
-    val content: String,
-    val explanation: String,
-    val difficulty: String
+data class GroqChoice(
+    val message: GroqMessage
 )
