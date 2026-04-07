@@ -46,7 +46,7 @@ management:
       export:
         url: ${GRAFANA_OTLP_ENDPOINT:https://otlp-gateway-prod-ap-northeast-0.grafana.net/otlp/v1/metrics}
         headers:
-          Authorization: Bearer ${GRAFANA_INSTANCE_ID}:${GRAFANA_API_KEY}
+          Authorization: Basic ${GRAFANA_BASIC_AUTH}
   metrics:
     export:
       otlp:
